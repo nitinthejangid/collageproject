@@ -1,0 +1,4 @@
+[error] D:\Scala\Scala_program\collegeAggregator\app\views\index.scala.html:170: Expected ending '}'
+[error]                     var atpos = x.indexOf("@");
+[error]                                            ^
+[error] (compile:twirlCompileTemplates) Twirl compilation failed

@@ -1,0 +1,3386 @@
+var app = angular.module( "College-WebApp",[ "ngAnimate", "nvd3", "ngCookies", "angularUtils.directives.dirPagination", "ngRoute" ] );
+
+app.controller( "dashboardController", function( $scope, $http, $location, $route )  {
+        $scope.csvresult = []
+        $scope.csvresult2 = [];
+        $scope.widgetCharts = [];
+
+        $scope.tech = [];
+        $scope.lang = [];
+    $scope.dummy = [];
+    $scope.myWelcome = [];
+
+
+    $scope.tag = true;
+    $scope.xaxis = [ "AcademicYears", "Semesters", "Courses", "Subjects" ];
+
+    $scope.tag1 = false;
+    $scope.tag2 = false;
+    $scope.tag3 = false;
+    $scope.tag4 = false;
+   /* $scope.func = function(){
+
+
+        if( $scope.form.xaxis == "academicYears" ){
+
+            $scope.tag1 = true;
+            $scope.tag2 = false;
+            $scope.tag3 = false;
+            $scope.tag4 = false;
+
+            $scope.allAcademicYears = [ "ChooseAllYears", "2015-2016", "2016-2017", "2017-2018" ];
+
+            $scope.getAllCoursesAvg = function ( form ) {
+                $scope.allCoursesAvg = [ "AllCoursesAggrigation", "CSE", "ECE", "EEE" ];
+            }
+            $scope.getAllSemesterAvg = function ( form ) {
+                $scope.allSemesters = [ "AllSemestersavg ", "SEMESTER1", "SEMESTER2", "SEMESTER3", "SEMESTER4", "SEMESTER5", "SEMESTER6", "SEMESTER7", "SEMESTER8" ];
+            }
+            $scope.getAllSubjectAvg = function ( form ) {
+                $scope.allSubjectAvg = [ "AllSubjects", "Subject1", "Subject2", "Subject3", "Subject4", "Subject5", "Subject6", "Lab1", "Lab2", "Lab3" ];
+            }
+        } else if ( $scope.form.xaxis == "Semesters" ) {
+            $scope.tag2 = true;
+            $scope.tag1 = false;
+            $scope.tag3 = false;
+            $scope.tag4 = false;
+
+            $scope.allSemesters = [ "AllSemestersavg ", "SEMESTER1", "SEMESTER2", "SEMESTER3", "SEMESTER4", "SEMESTER5", "SEMESTER6", "SEMESTER7", "SEMESTER8" ];
+
+            $scope.getallAcademicYears = function ( form ) {
+                $scope.allAcademicYears = [ "ChooseAllYears", "2015-2016", "2016-2017", "2017-2018" ];
+            }
+            $scope.getAllCoursesAvg = function ( form ) {
+                $scope.allCoursesAvg = [ "AllCoursesAggrigation", "CSE", "ECE", "EEE" ];
+            }
+            $scope.getAllSubjectAvg = function ( form ) {
+                $scope.allSubjectAvg = [ "AllSubjects", "Subject1", "Subject2", "Subject3", "Subject4", "Subject5", "Subject6", "Lab1", "Lab2", "Lab3" ];
+            }
+
+
+        } else if ( $scope.form.xaxis == "Courses" ) {
+            $scope.tag3 = true;
+            $scope.tag1 = false;
+            $scope.tag2 = false;
+            $scope.tag4 = false;
+
+            $scope.allCoursesAvg = [ "AllCoursesAggrigation", "CSE", "ECE", "EEE" ];
+
+            $scope.getallAcademicYears = function ( form ) {
+                $scope.allAcademicYears = [ "ChooseAllYears", "2015-2016", "2016-2017", "2017-2018" ];
+            }
+            $scope.getAllSemesterAvg = function ( form ) {
+                $scope.allSemesters = [ "AllSemestersavg ", "SEMESTER1", "SEMESTER2", "SEMESTER3", "SEMESTER4", "SEMESTER5", "SEMESTER6", "SEMESTER7", "SEMESTER8" ];
+            }
+            $scope.getAllSubjectAvg = function ( form ) {
+                $scope.allSubjectAvg = [ "AllSubjects", "Subject1", "Subject2", "Subject3", "Subject4", "Subject5", "Subject6", "Lab1", "Lab2", "Lab3" ];
+            }
+
+
+        }
+        else if ( $scope.form.xaxis == "Subjects" ) {
+            $scope.tag4 = true;
+            $scope.tag1 = false;
+            $scope.tag2 = false;
+            $scope.tag3 = false;
+
+
+            $scope.allSubjectAvg = [ "AllSubjects", "Subject1", "Subject2", "Subject3", "Subject4", "Subject5", "Subject6", "Lab1", "Lab2", "Lab3" ];
+
+            $scope.getAllSemesterAvg = function ( form ) {
+                $scope.allSemesters = [ "AllSemestersavg ", "SEMESTER1", "SEMESTER2", "SEMESTER3", "SEMESTER4", "SEMESTER5", "SEMESTER6", "SEMESTER7", "SEMESTER8" ];
+            }
+            $scope.getallAcademicYears = function ( form ) {
+                $scope.allAcademicYears = [ "ChooseAllYears", "2015-2016", "2016-2017", "2017-2018" ];
+            }
+            $scope.getAllCoursesAvg = function ( form ) {
+                $scope.allCoursesAvg = [ "AllCoursesAggrigation", "CSE", "ECE", "EEE" ];
+            }
+
+        }
+
+
+    }
+*/
+
+
+    $scope.yaxis = [ "Number of Students in the perticular year", "Overall Average Marks parcentage on all years", "Overall pass percentage", "Overall fail percentage" ];
+
+    $scope.chart = [ "AreaChart", "PieChart", "LineChart" ];
+        $scope.user = [ "user" ];
+        $scope.typeofadmin = [];
+        $scope.button = [];
+    $scope.signup = [];
+        $scope.buttonshow = true;
+    $scope.para = true;
+    $scope.onloadtable = false;
+        $scope.organ = true;
+        $scope.orgTable = false;
+        $scope.editTable = false;
+        $scope.courseShow = false;
+        $scope.impbtn = true;
+        $scope.techtables = true;
+        $scope.widGraph = false;
+        $scope.studenttable = false;
+        $scope.Student = false;
+        $scope.importbtn = false;
+        $scope.orgCourses = [];
+
+    $scope.studentshow = false
+        $scope.organId = "";
+    $scope.welcome = true;
+    $scope.sample = false;
+   $scope.import = false;
+    $scope.flag = 0;
+    $scope.danger = false;
+        $scope.widstyle = "float: right; margin-top: -4%;margin-right: 17%;";
+
+
+        $scope.form = {};
+        $scope.visible = false;
+        $scope.limit = 2;
+
+        $scope.dataBRAssetLine = [];
+        $scope.dataPieChartBR = [];
+        $scope.dataBRAsset = [];
+
+        $scope.linewidget = [];
+        $scope.areawidget = [];
+        $scope.piewidget = [];
+
+        $scope.graphArray = [];
+        $scope.flagg = false;
+        $scope.flagg1 = true;
+
+        var values = {};
+        values.academicYears = [ 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 ];
+        values.semesters = [ 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2121 ];
+        values.courses = [ 2101, 2102, 2103, 2104, 2105, 2106, 2107, 2108, 2109, 2110, 2111 ];
+        values.subjects = [ 3101, 3102, 3103, 3104, 3105, 3106, 3107, 3108, 3109, 3110, 3111 ];
+        //values.piex = [ "2001", "2002", "2003", "2004", "2005", "2006" ];
+
+    var values1 = {};
+    values1.academicYears1 = [ 20, 30, 100, 70, 50, 28, 89, 45, 56, 59, 29 ];
+    values1.semesters1 = [ 22, 17, 89, 34, 25, 78, 12, 100, 54, 64, 77 ];
+    values1.courses1 = [ 20, 30, 10, 70, 50, 28, 80, 45, 56, 59, 100 ];
+    values1.subjects1 = [ 15, 35, 70, 90, 50, 28, 80, 45, 56, 79, 10 ];
+   // values1.piey = [ 10, 30, 50, 40, 70, 25 ];
+
+
+
+        function exportTableToCSV( $table, filename ) {
+       // alert("inside")
+        var $headers = $table.find( 'tr:has(th)' ), $rows = $table.find( 'tr:has(td)' ), tmpColDelim = String.fromCharCode( 11 ), tmpRowDelim = String.fromCharCode( 0 ), colDelim = '","', rowDelim = '"\r\n"';
+
+
+        console.log( $headers );
+        // Grab text from table into CSV formatted string
+        var csv = '"';
+        csv += formatRows($headers.map( grabRow ));
+        csv += rowDelim;
+        csv += formatRows($rows.map( grabRow )) + '"';
+
+        // Data URI
+        var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent( csv );
+
+        // For IE (tested 10+)
+        if (window.navigator.msSaveOrOpenBlob) {
+            var blob = new Blob( [ decodeURIComponent( encodeURI( csv ) ) ], {
+                type: "text/csv;charset=utf-8;"
+            });
+            navigator.msSaveBlob( blob, filename );
+        } else {
+            $(this)
+                .attr({
+                    'download': filename,
+                    'href': csvData
+                    //,'target' : '_blank' //if you want it to open in a new window
+                });
+        }
+
+        //------------------------------------------------------------
+        // Helper Functions
+        //------------------------------------------------------------
+        // Format the output so it has the appropriate delimiters
+        function formatRows( rows ){
+            return rows.get().join( tmpRowDelim )
+                .split( tmpRowDelim ).join( rowDelim )
+                .split( tmpColDelim ).join( colDelim );
+        }
+        // Grab and format a row from the table
+        function grabRow( i, row ){
+
+            var $row = $( row );
+            //for some reason $cols = $row.find('td') || $row.find('th') won't work...
+            var $cols = $row.find( 'td' );
+            if( !$cols.length ) {
+                $cols = $row.find( 'th' );
+            }
+
+            return $cols.map( grabCol )
+                .get().join( tmpColDelim );
+        }
+        // Grab and format a column from the table
+        function grabCol( j, col ){
+            var $col = $( col ),
+                $text = $col.text();
+
+            return $text.replace( '"', '""' ); // escape double quotes
+
+        }
+    }
+
+
+    // This must be a hyperlink
+    $( "#export" ).click(function ( event ) {
+
+
+       // alert("clicked")
+        // var outputFile = 'export'
+        var outputFile = 'export';
+        outputFile = outputFile.replace( '.csv', '' ) + '.csv'
+
+        // CSV
+        exportTableToCSV.apply( this, [ $( '#dvData > table' ), outputFile ] );
+
+        // IF CSV, don't do event.preventDefault() or return false
+        // We actually need this to be a typical hyperlink
+    });
+
+
+
+
+    $scope.clear = function(){
+        $scope.onloadtable = true;
+        $scope.techtables = false;
+            $scope.orgTable = false;
+            $scope.editTable = false;
+            $scope.courseShow = false;
+            $scope.impbtn = false;
+            $scope.widGraph = false;
+            $scope.studenttable = false;
+            $scope.Student = false;
+            $scope.importbtn = false;
+        }
+
+
+    $scope.saveyes = function(){
+       // $scope.onloadtable = false;
+        $scope.courseShow = true;
+       $scope.studentshow = true;
+        $scope.Student = false;
+        $scope.orgtable = false;
+        $( "#savepopup" ).modal( "hide" );
+
+    }
+
+    $scope.saveno = function(){
+       // $scope.onloadtable = false;
+        $( "#savepopup" ).modal( "hide" );
+        $scope.Student = false;
+        $scope.studentshow = false;
+    }
+
+
+    $scope.orgImport = function(){
+      //  $scope.onloadtable = false;
+        $scope.sample = true;
+        $scope.importbtn = true;
+        $scope.import = true;
+        $scope.impbtn = true;
+        $scope.editTable = false;
+        $scope.courseShow = false;
+        $scope.orgTable = false;
+        $scope.widGraph = false;
+        $scope.studenttable = false;
+        $scope.Student = false;
+        $scope.welcome = false;
+        $scope.studentshow = false;
+        $scope.danger = false;
+
+    }
+
+
+    $scope.start = function(){
+        //$scope.onloadtable = true;
+        $scope.sample = true;
+        $scope.importbtn = true;
+        $scope.import = true;
+        $scope.welcome = false;
+
+    }
+    $scope.studentImport = function(){
+
+        if($scope.flag == 1)
+        {
+            $scope.danger = true
+            $scope.import = true;
+            $scope.sample = true;
+            $scope.welcome = false;
+
+        }
+
+
+      else {
+           // $scope.onloadtable = false;
+            $scope.courseShow = true;
+            $scope.studentshow = true;
+            $scope.impbtn = false;
+            $scope.editTable = false;
+
+            $scope.orgTable = false;
+            $scope.widGraph = false;
+            $scope.studenttable = false;
+            $scope.Student = false;
+            $scope.importbtn = false;
+            $scope.welcome = false;
+        }
+
+    }
+    $scope.sort = function( keyname ){
+        $scope.sortKey = keyname;   //set the sortKey to the param passed
+        $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    }
+    $scope.getAcademic = function( form )
+    {
+        $scope.importbtn = false;
+        academicTemp = [];
+        $scope.academicYear = [];
+        $scope.error = "";
+        console.log( form );
+        var course = form.course;
+        for(i = 0; i < $scope.orgCourseDetails.length;i++)
+        {
+            if( $scope.orgCourseDetails[i].courseName == course && $scope.orgCourseDetails[i].totalSemesters != "" )
+            {
+                academicTemp.push($scope.orgCourseDetails[i].academicYear);
+            }
+        }
+        academicTemp = academicTemp.filter(function( str ) {
+            return /\S/.test( str );
+        });
+        $.each( academicTemp, function( i, el ){
+            if($.inArray( el, $scope.academicYear ) === -1){
+                $scope.academicYear.push( el );
+            }
+        });
+        console.log($scope.academicYear);
+        $scope.form.semester = null;
+    }
+
+    $scope.getSemester = function( form )
+    {
+        $scope.importbtn = false;
+        semesterTemp = [];
+        $scope.semester = [];
+        $scope.error = "";
+        console.log( form );
+        $scope.semester = [];
+        var semesterTemp = new Array();
+        var course = form.course;
+        var academic = form.academic;
+        console.log($scope.Netsuite);
+        for(i = 0; i < $scope.orgCourseDetails.length;i++)
+        {
+            if($scope.orgCourseDetails[i].courseName == course && $scope.orgCourseDetails[i].academicYear == academic)
+            {
+                semesterTemp.push($scope.orgCourseDetails[i].totalSemesters);
+                //console.log($scope.project);
+            }
+        }
+        semesterTemp = semesterTemp.filter(function( str ) {
+            return /\S/.test( str );
+        });
+        $.each( semesterTemp, function( i, el ){
+            if($.inArray( el, $scope.semester) === -1 ) {
+                $scope.semester.push( el );
+            }
+        });
+        console.log($scope.semester);
+        //$scope.form.semester = $scope.semester[0];
+    }
+    $scope.getImportBtn = function( form )
+    {
+
+        $scope.importbtn = true;
+    }
+
+
+
+    $scope.editItem = function( user ) {
+        user.editing = true;
+    }
+
+    $scope.doneEditing = function( user ) {
+        user.editing = false;
+
+    };
+
+
+
+    $scope.onloadGraph = function(){
+       // alert("graph");
+        $scope.widGraph = true;
+
+        for(i = 0;i < $scope.widgetCharts.length;i++) {
+
+            var a = $scope.widgetCharts[i].xaxis.toLowerCase();
+            console.log( a );
+
+            var b = $scope.widgetCharts[i].yaxis.toLowerCase();
+            console.log( b );
+
+    var values = [];
+            $scope.areaChartData = [];
+            $scope.subjects = [];
+            /*for (var j = 0; j < values[a].length; j++) {
+                $scope.subjects[j] = {
+                    "x": values[a][j],
+                    "y": values[b][j]
+                }
+                $scope.areaChartData.push( new Array(values[a][j], values[b][j]) );
+            } */
+            console.log( $scope.subjects );
+            $scope.subjectdata = $scope.subjects;
+            console.log($scope.widgetCharts[i].chartType);
+            if ($scope.widgetCharts[i].chartType == "PieChart") {
+
+                $scope.piecount = $scope.piecount + 1;
+                $scope.pieshow = true;
+                if ($scope.areacount < 0) {
+                    $scope.areashow = false;
+                } else {
+                    $scope.areashow = true;
+                }
+
+                if ($scope.linecount < 0) {
+                    $scope.lineshow = false;
+                } else {
+                    $scope.lineshow = true;
+                }
+
+                $scope.getNumber = function( pc ) {
+                    return new Array( pc );
+                }
+
+                $scope.piewidget[$scope.piecount] = $scope.form.widget;
+                $scope.optionsPie = {
+                    chart: {
+                        type: "pieChart",
+                        height: 430,
+                        x: function( d ) {
+                            return d.key;
+                        },
+                        y: function( d ) {
+                            return d.y;
+                        },
+                        showLabels: true,
+                        duration: 500,
+                        labelThreshold: 0.01,
+                        labelSunbeamLayout: true,
+                        legend: {
+                            margin: {
+                                top: 5,
+                                right: 35,
+                                bottom: 5,
+                                left: 0
+                            }
+                        }
+                    }
+                };
+
+                $scope.dataPieChartBR[$scope.piecount] = [ {
+                    key: "Maths",
+                    y: 60,
+                    "color": "rgb( 205, 21, 51 )"
+                }, {
+                    key: "physics",
+                    y: 70,
+                    "color": "rgb( 63, 81, 181 )"
+                }, {
+                    key: "chemistry",
+                    y: 80,
+                    "color": "rgb( 255, 87, 34 )"
+                }, {
+                    key: "Science",
+                    y: 100,
+                    "color": "rgb( 6, 140, 53 )"
+                } ];
+                $scope.graphArray.push( { wid: $scope.widgetCharts[i].wid, type: $scope.widgetCharts[i].chartType, options: $scope.optionsPie, data: $scope.dataPieChartBR[$scope.piecount]});
+
+                /* $scope.graphArray.push({
+                 wid: $scope.widgetCharts[i].wid,
+                 type: $scope.widgetCharts[i].chartType,
+                 options: $scope.optionsarea,
+                 data: $scope.dataPieChartBR[$scope.piecount]
+                 });*/
+
+            }
+            else if ($scope.widgetCharts[i].chartType == "LineChart") {
+
+
+
+                $scope.linecount = $scope.linecount + 1;
+                $scope.lineshow = true;
+                if ($scope.areacount < 0) {
+                    $scope.areashow = false;
+                } else {
+                    $scope.areashow = true;
+                }
+
+                if ($scope.piecount < 0) {
+                    $scope.pieshow = false;
+                } else {
+                    $scope.pieshow = true;
+                }
+
+                $scope.getLineChartCount = function( lc ) {
+
+                    return new Array( lc );
+                }
+                $scope.linewidget[$scope.linecount] = $scope.form.widget;
+
+
+                $scope.line = {
+                    chart: {
+                        zoom: {},
+                        type: 'lineChart',
+                        height: 420,
+                        margin: {
+                            top: 20,
+                            right: 20,
+                            bottom: 40,
+                            left: 55
+                        },
+                        x: function( d ) {
+                            return d.x;
+                        },
+                        y: function( d ) {
+                            return d.y;
+                        },
+                        useInteractiveGuideline: true,
+                        dispatch: {
+
+                            stateChange: function( e ) {
+                                console.log( "stateChange" );
+                            },
+                            changeState: function( e ) {
+                                console.log( "changeState" );
+                            },
+                            tooltipShow: function( e ) {
+                                console.log( "tooltipShow" );
+                            },
+                            tooltipHide: function( e ) {
+                                console.log( "tooltipHide" );
+                            }
+                        },
+                        xAxis: {
+                            axisLabel: $scope.form.xaxis
+                        },
+                        yAxis: {
+                            axisLabel: $scope.form.yaxis,
+                            tickFormat: function( d ) {
+                                return d3.format( '.02f' )( d );
+                            },
+                            axisLabelDistance: 35
+                        },
+                        callback: function( chart ) {
+                            console.log( "!!! lineChart callback !!!" );
+                        }
+
+                    },
+                    title: {
+                        enable: true,
+                        text: ""
+                    },
+                };
+
+                $scope.line = {
+                    chart: {
+                        zoom: {},
+                        type: 'lineChart',
+                        height: 420,
+                        margin: {
+                            top: 20,
+                            right: 20,
+                            bottom: 40,
+                            left: 55
+                        },
+                        x: function( d ) {
+                            return d.x;
+                        },
+                        y: function( d ) {
+                            return d.y;
+                        },
+                        useInteractiveGuideline: true,
+                        dispatch: {
+
+                            stateChange: function( e ) {
+                                console.log( "stateChange" );
+                            },
+                            changeState: function( e ) {
+                                console.log( "changeState" );
+                            },
+                            tooltipShow: function( e ) {
+                                console.log( "tooltipShow" );
+                            },
+                            tooltipHide: function( e ) {
+                                console.log( "tooltipHide" );
+                            }
+                        },
+                        xAxis: {
+                            axisLabel: $scope.form.xaxis
+                        },
+                        yAxis: {
+                            axisLabel: $scope.form.yaxis,
+                            tickFormat: function( d ) {
+                                return d3.format( '.02f' )( d );
+                            },
+                            axisLabelDistance: 35
+                        },
+                        callback: function( chart ) {
+                            console.log( "!!! lineChart callback !!!" );
+                        }
+
+                    },
+                    title: {
+                        enable: true,
+                        text: ""
+                    },
+                };
+
+                var keyLabel = $scope.widgetCharts[i].xaxis + " Vs " + $scope.widgetCharts[i].yaxis;
+                $scope.subDataObj = [ {
+                    values: $scope.subjects, // values - represents the
+                    key: keyLabel, // key - the name of the series.
+                    color: '#e43234', // color - optional: choose your own
+                    strokeWidth: 3
+                }
+
+                ];
+
+                $scope.dataBRAssetLine[$scope.linecount] = $scope.subDataObj;
+                $scope.graphArray.push( { wid: $scope.widgetCharts[i].wid, type: $scope.widgetCharts[i].chartType, options: $scope.line, data: $scope.dataBRAssetLine[$scope.linecount]});
+                console.log( $scope.graphArray );
+                /* $scope.graphArray.push({
+                 wid: $scope.widgetCharts[i].wid,
+                 type: $scope.widgetCharts[i].chartType,
+                 options: $scope.optionsarea,
+                 data: $scope.dataPieChartBR[$scope.piecount]
+                 });
+
+                 */
+            }
+            else if ($scope.widgetCharts[i].chartType == "AreaChart") {
+
+                //$scope.areawidget.push($scope.form.widget);
+                $scope.areacount = $scope.areacount + 1;
+                $scope.areashow = true;
+                if ($scope.linecount < 0) {
+                    $scope.lineshow = false;
+                } else {
+                    $scope.lineshow = true;
+                }
+
+                if ($scope.piecount < 0) {
+                    $scope.pieshow = false;
+                } else {
+                    $scope.pieshow = true;
+                }
+                $scope.areawidget[$scope.areacount] = $scope.form.widget;
+
+                $scope.optionsarea = {
+                    chart: {
+                        showControls: false,
+                        type: "stackedAreaChart",
+                        height: 430,
+                        margin: {
+                            top: 20,
+                            right: 20,
+                            bottom: 30,
+                            left: 40
+                        },
+                        x: function( d ) {
+                            return d[0];
+                        },
+                        y: function( d ) {
+                            return d[1];
+                        },
+
+                        useVoronoi: false,
+                        clipEdge: true,
+                        duration: 100,
+                        useInteractiveGuideline: true,
+                        xAxis: {
+                            showMaxMin: false,
+                            tickFormat: function( d ) {
+                                return d3.format( ",.2f" )( d );
+                            }
+                        },
+                        yAxis: {
+                            tickFormat: function( d ) {
+                                return d3.format( ",.2f" )( d );
+                            }
+                        },
+                        zoom: {
+                            enabled: true,
+                            scaleExtent: [ 1, 10 ],
+                            useFixedDomain: false,
+                            useNiceScale: false,
+                            horizontalOff: false,
+                            verticalOff: true,
+                            unzoomEventType: "dblclick.zoom"
+                        }
+                    }
+                };
+
+
+
+                var keyLabel1 = $scope.widgetCharts[i].xaxis + " Vs " + $scope.widgetCharts[i].yaxis;
+                console.log( $scope.areaChartData );
+                $scope.dataBRAsset[$scope.areacount] = [ {
+                    "key": keyLabel1,
+                    "values": $scope.areaChartData,
+                    "color": "rgb( 6, 140, 53 )"
+                } ];
+
+                $scope.graphArray.push({
+                    wid: $scope.widgetCharts[i].wid,
+                    type: $scope.widgetCharts[i].chartType,
+                    options: $scope.optionsarea,
+                    data: $scope.dataBRAsset[$scope.areacount]
+                });
+            }
+
+
+
+            /* $scope.graphdata.push ( {
+             "color": "#e43234",
+             "key":$scope.widgetCharts[i].xaxis + " vs " + $scope.widgetCharts[i].yaxis
+
+             });*/
+        }
+    }
+
+
+
+
+
+    $scope.postChangePassword = function( registorUrl, successUrl ) {
+
+
+        c = document.cookie.split( ';' );
+        var cookies = {};
+        for(i = c.length - 1;i >= 0;i--){
+            C = c[i].split( '=' );
+            C[0] = C[0].replace( " ", "" );
+            console.log(C[0]);
+            //C[0].trim();
+            //console.log(C[0]);
+            if(C[0] == "sessionId"){
+                cookies[C[0]] = C[1];
+            }
+
+        }
+        if ( $scope.oldpassword == undefined || $scope.oldpassword == "" ) {
+            $scope.flagg = true;
+            $scope.errormessage = "Please enter oldpassword";
+        }else if ($scope.newpassword1 == undefined || $scope.newpassword1 == "" ) {
+            $scope.flagg = true;
+            $scope.errormessage = "Please enter password";
+
+        } else if ( $scope.confirmnewpassword == undefined || $scope.confirmnewpassword == "" ) {
+            $scope.flagg = true;
+            $scope.errormessage = "Please enter Confirm password";
+        } else if ( ( $scope.newpassword1.length ) > 16 ) {
+            $scope.flagg = true;
+            $scope.errormessage = "Password should not have more than 16 characters";
+
+        } else if (($scope.newpassword1.length) < 6 ) {
+            $scope.flagg = true;
+            $scope.errormessage = "Password should have atleast 6 alphanumeric characters including an 1upper case and 1 lower case";
+        } else if ( ( /^[A-Za-z0-9!@#$%^&*(   )_]{6,16}$/ )
+                .test( $scope.newpassword1 ) ) {
+            if (( /^[\S]+$/ ).test($scope.newpassword1)) {
+
+                if (( /^[^a-z]+$/ ).test($scope.newpassword1)) {
+                    $scope.flagg = true;
+                    $scope.errormessage = "Password should have atleast one lower case character";
+                } else if (( /^[^A-Z]+$/ ).test($scope.newpassword1)) {
+                    $scope.flagg = true;
+                    $scope.errormessage = "Password should have atleast one upper case character";
+                } else if (( /^[^0-9]+$/ ).test($scope.newpassword1)) {
+                    $scope.flagg = true;
+                    $scope.errormessage = "Password should have atleast one numerical character";
+                } else if ($scope.oldpassword == $scope.newpassword1) {
+                    $scope.flagg = true;
+                    $scope.errormessage = "The oldpassword and newPassword should be different,Please check";
+                }
+                else if ($scope.newpassword1 != $scope.confirmnewpassword) {
+                    $scope.flagg = true;
+                    $scope.errormessage = "The password and confirmPassword is not matching,Please check";
+                }
+                else {
+
+
+                    $scope.data = {
+
+                        sessionId: cookies["sessionId"],
+                        actionType: "ChangePassword",
+                        oldpassword: $scope.oldpassword,
+                        newpassword: $scope.newpassword1,
+
+                    };
+
+                    console.log($scope.data);
+
+                    $http({
+                        method: 'POST',
+                        url: '/reset',
+                        data: $scope.data,
+                        headers: { 'Content-Type': 'application/json'}
+                    }).then(function mySucces( response ) {
+                        //alert("Got Response!");
+                        $scope.myWelcome = {};
+                        $scope.myWelcome = response.data;
+
+                        if ($scope.myWelcome.status == "success") {
+                            //alert($scope.myWelcome.error)
+                            window.location = successUrl;
+                        }
+                        else {
+                           // window.location = successUrl;
+                            $scope.flagg1 = true;
+                            $scope.errormessage1 = "Old Password you have entered is wrong";
+
+                        }
+                    }, function myError( response ) {
+                        //alert("Erorr");
+                        $scope.myWelcome = response.statusText;
+
+                    });
+                }
+            }
+        }
+
+    };
+
+
+
+    $scope.postRegistorFunction = function( registorUrl, successUrl ) {
+
+
+        if ($scope.password == undefined || $scope.password == "" ) {
+            $scope.flaggp = true;
+            $scope.passworderror = "Please enter password";
+
+        } else if ( $scope.confirmPassword == undefined || $scope.confirmPassword == "" ) {
+            $scope.flaggp = false;
+            $scope.flaggpc = true;
+            $scope.confirmPassworderror = "Please enter Confirm password";
+        } else if ( ( $scope.password.length ) > 16 ) {
+            $scope.flaggp = true;
+            $scope.passworderror = "Password should not have more than 16 characters";
+            $scope.flaggpc = true;
+            $scope.confirmPassworderror = "Password should not have more than 16 characters";
+
+        } else if (($scope.password.length) < 6 ) {
+            $scope.flaggp = true;
+            $scope.passworderror = "Password should have atleast 6 alphanumeric characters including an 1upper case and 1 lower case";
+            $scope.flaggpc = true;
+            $scope.confirmPassworderror = "Password should have atleast 6 alphanumeric characters including an 1upper case and 1 lower case";
+        } else if ( ( /^[A-Za-z0-9!@#$%^&*(   )_]{6,16}$/ )
+                .test( $scope.password ) ) {
+            if ( ( /^[\S]+$/ ).test( $scope.password ) ) {
+
+                if (( /^[^a-z]+$/ ).test($scope.password)) {
+                    $scope.flaggp = true;
+                    $scope.passworderror = "Password should have atleast one lower case character";
+                    $scope.flaggpc = true;
+                    $scope.confirmPassworderror = "Password should have atleast one lower case character";
+                } else if (( /^[^A-Z]+$/ ).test($scope.password)) {
+                    $scope.flaggp = true;
+                    $scope.passworderror = "Password should have atleast one upper case character";
+                    $scope.flaggpc = true;
+                    $scope.confirmPassworderror = "Password should have atleast one upper case character";
+                } else if (( /^[^0-9]+$/ ).test($scope.password)) {
+                    $scope.flaggp = true;
+                    $scope.passworderror = "Password should have atleast one numerical character";
+                    $scope.flaggpc = true;
+                    $scope.confirmPassworderror = "Password should have atleast one numerical character";
+                }
+                else if ($scope.password != $scope.confirmPassword) {
+                    $scope.flaggp = true;
+                    $scope.passworderror = "The password and confirmPassword is not matching,Please check";
+                    $scope.flaggpc = true;
+                    $scope.confirmPassworderror = "The password and confirmPassword is not matching,Please check";
+                }
+                else {
+                    $scope.flaggpc = false;
+                    $scope.data = {
+                        firstName: $scope.firstname,
+                        lastName: $scope.lastname,
+                        emailId: $scope.email,
+                        password: $scope.password,
+                        role: $scope.form.typeofadmin,
+                        organization: $scope.organizationname,
+
+
+                    };
+
+                    console.log($scope.data);
+
+                    $http({
+                        method: 'POST',
+                        url: '/registor1',
+                        data: $scope.data,
+                        headers: { 'Content-Type': 'application/json'}
+                    }).then(function mySucces( response ) {
+                        //alert("Registor response successfully!");
+                        $scope.myWelcome = response.data;
+                        //window.location = successUrl;
+                        if($scope.myWelcome.status == "success")
+                        {
+                            $( "#register" ).modal( "hide" );
+                            $( "#registerConfirm" ).modal( "show" );
+
+
+                        }
+                        else
+                        {
+                            //alert($scope.myWelcome.status)
+                            $( "#register" ).modal( "hide" );
+                            $( "#registerFailure" ).modal( "show" );
+
+
+                        }
+
+                    }, function myError( response ) {
+                        //alert("Erorr");
+                        $scope.myWelcome = response.statusText;
+                        console.log( "fail" );
+                        //alert($scope.myWelcome.failure);
+                    });
+
+                }
+            }
+        }
+    };
+
+
+    $scope.logout = function()
+    {
+        var x = document.cookie;
+        c = document.cookie.split( ';' );
+        var cookies = {};
+
+        for(i = c.length - 1;i >= 0;i--){
+            C = c[i].split( '=' );
+            C[0] = C[0].replace( " ", "" );
+            console.log(C[0]);
+            //C[0].trim();
+            //console.log(C[0]);
+            if(C[0] == "sessionId"){
+                cookies[C[0]] = C[1];
+            }
+        }
+        $scope.data = {
+
+            sessionid: cookies["sessionId"]
+
+        };
+
+        $http({
+            method: 'POST',
+            url: '/logout',
+            data: $scope.data,
+            headers: { 'Content-Type': 'application/json'}
+
+        }).then(function ( response ) {
+
+            $scope.myWelcome = response.data;
+
+            console.log( response );
+            //console.log(response.data);
+
+            if($scope.myWelcome.status == "Success")
+            {
+                var ses = "";
+                document.cookie = "sessionId=" + ses;
+                console.log( cookies );
+
+                window.location = '/';
+            }
+            else
+            {
+              console.log( "Logout Fail" );
+
+            }
+
+        }, function ( error ) {
+            // alert("Erorr1");
+            console.log( response );
+
+            $scope.myWelcome1 = response.statusText;
+
+
+        });
+
+    };
+
+
+
+	$scope.open = function()
+	{
+		$( "#widget" ).modal( "show" );
+        $scope.form.xaxis = null;
+        $scope.form.yaxis = null;
+        $scope.form.chart = null;
+        $scope.form.widget = null;
+        $scope.orgTable = false;
+        $scope.editTable = false;
+        $scope.courseShow = false;
+       $scope.studentshow = false;
+        $scope.impbtn = false;
+        $scope.widGraph = false;
+        $scope.studenttable = false;
+        $scope.Student = false;
+        $scope.importbtn = false;
+        //$scope.onloadtable = false;
+	};
+    $scope.register = function()
+    {
+      //  $scope.onloadtable = false;
+        $scope.flaggp = false;
+        $scope.flaggpc = false;
+        $scope.firstname = null;
+        $scope.lastname = null;
+        $scope.email = null;
+        $scope.password = null;
+        $scope.confirmPassword = null;
+        $scope.form.typeofadmin = null;
+        $scope.organizationname = null;
+        $( "#register" ).modal( "show" );
+        $scope.orgTable = false;
+        $scope.editTable = false;
+        $scope.courseShow = false;
+        $scope.studentshow = false;
+        $scope.impbtn = false;
+        $scope.widGraph = false;
+        $scope.studenttable = false;
+        $scope.Student = false;
+        $scope.importbtn = false;
+
+
+    };
+
+    $scope.onload = function()
+    {
+        $scope.onloadtable = true;
+      //  $scope.widGraph = true
+        $scope.grapArray = [];
+        $scope.areaChartData = [];
+        $scope.subjects = [];
+
+        var x = document.cookie;
+
+        c = document.cookie.split( ';' );
+        var cookies = {};
+
+        for(i = c.length - 1;i >= 0;i--){
+            C = c[i].split( '=' );
+            C[0] = C[0].replace( " ", "" );
+            console.log(C[0]);
+
+            if(C[0] == "sessionId"){
+                cookies[C[0]] = C[1];
+            }
+
+        }
+        console.log( C );
+        console.log( c );
+       // alert(cookies["sessionId"]);
+        console.log(cookies["sessionId"]);
+
+        var strCookies = document.cookie;
+        console.log( strCookies );
+        var cookiearray = strCookies.split( ';' )
+        console.log( cookiearray );
+
+
+        $scope.data = {
+
+            sessionid: cookies["sessionId"]
+
+        };
+
+
+        console.log( $scope.data );
+        if($scope.data.sessionid == undefined || $scope.data.sessionid == "")
+        {
+            window.location = '/';
+        }
+        else
+        {
+            $http({
+                method: 'POST',
+                url: '/session',
+                data: $scope.data,
+                headers: { 'Content-Type': 'application/json'}
+
+            }).then(function( response ) {
+
+                $scope.myWelcome = response.data;
+                console.log( response.data );
+
+                if($scope.myWelcome[0].status == "success")
+                {
+
+                    $http({
+                        method: 'POST',
+                        url: '/fetchuser',
+                        data: $scope.data,
+                        headers: { 'Content-Type': 'application/json'}
+
+                    }).then(function ( response ) {
+
+                        $scope.myWelcome = response.data;
+                        //alert(JSON.stringify(response));
+                        console.log( response );
+                        console.log(response.data);
+
+                        if($scope.myWelcome.status == "success")
+
+                        {
+                            /*alert($scope.myWelcome.marksRespJson)
+                            //alert($scope.myWelcome.marksRespJson.org_name)
+                           // alert($scope.myWelcome.marksRespJson.marks)
+                            //alert($scope.myWelcome.marksRespJson.marks[1].subject)*/
+                    console.log($scope.myWelcome.language);
+                            console.log($scope.myWelcome.technology);
+                            $scope.tech = [];
+                            $scope.lang = [];
+
+
+
+                         $scope.myWelcome.language.sort( function( a, b ) {
+                                if ( Number(a.weightage) < Number(b.weightage) ) {
+                                    return -1;
+                                } else if ( Number(a.weightage) > Number(b.weightage) ) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            } );
+                         console.log($scope.myWelcome.language);
+                           // $scope.lang =$scope.myWelcome.language;
+
+
+
+                            $scope.myWelcome.technology.sort( function( a, b ) {
+                                if ( Number(a.weightage) < Number(b.weightage) ) {
+                                    return -1;
+                                } else if ( Number(a.weightage) > Number(b.weightage) ) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            } );
+                            for(i = 0;i < $scope.myWelcome.technology.length;i++){
+                                $scope.tech.push({
+                                    "rank": i + 1,
+                                    "technology": $scope.myWelcome.technology[i].technology,
+                                    "weightage": $scope.myWelcome.technology[i].weightage
+                                });
+                            }
+
+                            for(i = 0;i < $scope.myWelcome.language.length;i++){
+                                $scope.lang.push({
+                                    "rank": i + 1,
+                                    "technology": $scope.myWelcome.language[i].technology,
+                                    "weightage": $scope.myWelcome.language[i].weightage
+                                });
+                            }
+
+
+                            console.log($scope.myWelcome.technology);
+                            console.log($scope.tech);
+                            //alert(JSON.stringify($scope.myWelcome.technology));
+                            $scope.newArr = [];
+                            $scope.newArr = $scope.tech.map(function ( v ) { return { x: v.technology, y: v.rank}; });
+                           // alert(JSON.stringify( $scope.newArr));
+                            $scope.newArr1 = [];
+                            $scope.newArr1 = $scope.lang.map(function ( v ) { return { x: v.technology, y: v.rank}; });
+                           // alert(JSON.stringify( $scope.newArr1));
+                            //$scope.tech =$scope.myWelcome.technology;
+
+                            $scope.bar = [];
+                            $scope.bar1 = [];
+                            $scope.bar.push({ "key": "Languages",
+                                 "values": $scope.newArr1
+                            })
+                            $scope.bar1.push({ "key": "Technologies",
+                                "color": "rgb(241,102,35)",
+                                "values": $scope.newArr
+                            })
+                           // alert(JSON.stringify($scope.bar));
+
+                            $scope.subjectsonload = [];
+                            for (var i = 0; i < $scope.tech.length; i++) {
+
+                                $scope.subjectsonload.push( {
+                                    "x": $scope.tech[i].technology,
+                                    "y": $scope.tech[i].weightage * 1
+                                });
+
+                            }
+
+
+//alert(JSON.stringify( $scope.subjectsonload));
+                    console.log($scope.subjectsonload);
+                            $scope.optionsLineOnload = {
+                                chart: {
+                                    type: 'multiBarChart',
+                                    height: 450,
+                                    margin: {
+                                        top: 20,
+                                        right: 20,
+                                        bottom: 150,
+                                        left: 70
+                                    },
+
+                                    zoom: {
+                                        enabled: true,
+                                        scaleExtent: [ 1, 10 ],
+                                        useFixedDomain: false,
+                                        useNiceScale: false,
+                                        horizontalOff: false,
+                                        verticalOff: true,
+                                        unzoomEventType: "dblclick.zoom"
+                                    },
+
+                                    clipEdge: true,
+                                    //duration: 500,
+                                    stacked: true,
+                                    reduceXTicks: false,
+                                    xAxis: {
+                                        axisLabel: 'Languages',
+                                        showMaxMin: false,
+                                        rotateLabels: 30,
+                                        axisLabelDistance: 100,
+                                        /*tickFormat: fu  :nction(d){
+                                            return d3.format(',f')(d);
+                                        }*/
+                                    },
+                                    yAxis: {
+                                        axisLabel: 'Ranks',
+                                        axisLabelDistance: 10,
+                                        /*tickFormat: function(d){
+                                            return d3.format(',.1f')(d);
+                                        }*/
+                                    }
+                                }
+                            };
+
+                            $scope.dataLineOnload = $scope.bar;
+
+
+
+
+                            $scope.optionsLineOnload1 = {
+                                chart: {
+                                    type: 'multiBarChart',
+                                    height: 450,
+                                    margin: {
+                                        top: 20,
+                                        right: 20,
+                                        bottom: 150,
+                                        left: 70
+                                    },
+
+                                    zoom: {
+                                        enabled: true,
+                                        scaleExtent: [ 1, 10 ],
+                                        useFixedDomain: false,
+                                        useNiceScale: false,
+                                        horizontalOff: false,
+                                        verticalOff: true,
+                                        unzoomEventType: "dblclick.zoom"
+                                    },
+
+                                    clipEdge: true,
+                                    //duration: 500,
+                                    stacked: true,
+                                    reduceXTicks: false,
+                                    xAxis: {
+                                        axisLabel: 'Technology',
+                                        showMaxMin: false,
+                                        rotateLabels: 20,
+                                        axisLabelDistance: 60,
+                                        /*tickFormat: fu  :nction(d){
+                                         return d3.format(',f')(d);
+                                         }*/
+                                    },
+                                    yAxis: {
+                                        axisLabel: 'Ranks',
+                                        axisLabelDistance: 10,
+                                        /*tickFormat: function(d){
+                                            return d3.format(',.1f')(d);
+                                        }*/
+                                    }
+                                }
+                            };
+
+                            $scope.dataLineOnload1 = $scope.bar1;
+
+
+
+
+
+/*
+
+
+                            $scope.optionsLine = {
+                                chart: {
+                                    type: 'multiBarHorizontalChart',
+                                    height: 450,
+                                    x: function(d){return d.label;},
+                                    y: function(d){return d.value;},
+                                    showControls: true,
+                                    showValues: true,
+                                    duration: 500,
+                                    xAxis: {
+                                        showMaxMin: false
+                                    },
+                                    yAxis: {
+                                        axisLabel: 'Values',
+                                        tickFormat: function(d){
+                                            return d3.format(',.2f')(d);
+                                        }
+                                    }
+                                }
+                            };
+
+
+                            $scope.dataLine =  $scope.bar;*/
+
+
+
+                            $scope.widgetCharts = [];
+                            console.log($scope.myWelcome.charts);
+                            $scope.widgetCharts = $scope.myWelcome.charts;
+                            console.log($scope.widgetCharts);
+                            $scope.graphdata = [];
+                            $scope.welcome = false;
+                            $scope.sample = true;
+                            $scope.import = true;
+
+                            //$scope.onloadGraph();
+
+                            $scope.organId = $scope.myWelcome.dashboard.orgId;
+                            console.log( $scope.organId);
+                            $scope.organisation = $scope.myWelcome.dashboard.organization;
+                           // alert($scope.organisation);
+                            $scope.roles = $scope.myWelcome.dashboard.role;
+                            $scope.firstName = $scope.myWelcome.dashboard.firstName;
+                            console.log( $scope.organisation);
+                            $scope.dupCourses = [];
+                            $scope.orgCourses = [];
+                            console.log($scope.myWelcome.courses.length);
+                            if($scope.myWelcome.courses.length > 0)
+                            {
+                                //alert("hi");
+                                //$scope.courseShow = true;
+                                $scope.sample = true;
+                                $scope.import = true;
+
+                               // $scope.impbtn = false;
+                            }
+                            else
+                            {
+                                $scope.welcome = true;
+                                //$scope.impbtn = true;
+                                $scope.flag = 1;
+
+                                $scope.sample = false;
+                                $scope.import = false;
+                            }
+                            //$scope.csvresult = $scope.myWelcome.courses;
+                            $scope.orgCourseDetails = $scope.myWelcome.courses;
+                            for(i = 0;i < $scope.orgCourseDetails.length;i++){
+                                $scope.dupCourses.push($scope.orgCourseDetails[i].courseName);
+                            }
+                            console.log($scope.dupCourses);
+
+                            $.each($scope.dupCourses, function( i, el ){
+                                if($.inArray( el, $scope.orgCourses) === -1 ) {
+                                    $scope.orgCourses.push( el );
+                                }
+                            });
+                            console.log($scope.orgCourses);
+                            //alert("in success user");
+                            console.log($scope.myWelcome.dashboard.defaultPasswordFlag);
+                            if($scope.myWelcome.dashboard.defaultPasswordFlag == 0)
+                            {
+                                $( '#changepassword' ).modal( { backdrop: 'static', keyboard: false} )
+                                $( "#changepassword" ).modal( "show" );
+                            }
+                            else
+                            {
+                                $( "#changepassword" ).modal( "hide" );
+                            }
+
+                            console.log($scope.myWelcome.dashboard.role);
+                            if($scope.myWelcome.dashboard.role == "superadmin")
+                            {
+                                $scope.organ = false;
+                                $scope.typeofadmin = [ "admin", "user" ];
+                                $scope.button = "Register an Organisation";
+                                $scope.widstyle = "float: right; margin-top: -5%;margin-right: 20%;";
+                                $scope.signup = "sign up for admin";
+
+                            }else if($scope.myWelcome.dashboard.role == "admin"){
+                                $scope.typeofadmin = [ "user" ];
+                                $scope.button = "Register User";
+                                $scope.widstyle = "float: right; margin-top: -4.5%;margin-right: 14%;";
+                                $scope.signup = "sign up for user";
+                            }else
+                            {
+                                $scope.buttonshow = false;
+                                $scope.typeofadmin = [];
+                                $scope.widstyle = "float: right; margin-top: -2%;";
+                            }
+
+                        }
+                        else
+                        {
+                           // alert("in fail user");
+                            //window.location = '/';
+                        }
+
+                    }, function ( error ) {
+                       // alert("Erorr1");
+                        console.log( response );
+                        //alert(JSON.stringify(response));
+                        $scope.myWelcome1 = response.statusText;
+
+
+                    });
+
+                }
+                else
+                {
+                    //alert("in fail");
+                    window.location = '/';
+                }
+
+            }, function ( error ) {
+
+                console.log( "Fail" );
+
+            });
+
+
+        }
+
+    };
+
+
+//nitin
+    $scope.getWidgetDetails = function( form )
+    {
+        $scope.coursesWidget = [];
+        $scope.dupCourses = [];
+        $scope.allCoursesAvg = [];
+        $scope.dupacademicYear = [];
+        $scope.allAcademicYears = [];
+        $scope.dupSemesters = [];
+        $scope.allSemesters = [];
+        $scope.dupSubjects = [];
+        $scope.allSubjectAvg = [];
+        $scope.orgCourseDetails = [];
+        $scope.marksDetails = [];
+
+
+        $scope.orgCourseDetails = $scope.myWelcome.courses;
+
+
+       // alert($scope.orgCourseDetails)
+       // alert($scope.myWelcome.marksRespJson.marks)
+        $scope.marksDetails = $scope.myWelcome.marksRespJson.marks;
+        $scope.marksSemester = $scope.myWelcome.semester;
+        //alert("marksdetails: " + $scope.marksDetails)
+
+        if($scope.form.xaxis == "Courses")
+        {
+            $scope.tag3 = true;
+            $scope.tag1 = false;
+            $scope.tag2 = false;
+            $scope.tag4 = false;
+
+            $scope.coursesWidget = [];
+            $scope.dupCourses = [];
+
+            for(i = 0;i < $scope.orgCourseDetails.length;i++){
+                $scope.dupCourses.push($scope.orgCourseDetails[i].courseName);
+
+            }
+            console.log($scope.dupCourses);
+            //alert($scope.dupCourses)
+
+            $.each($scope.dupCourses, function( i, el ){
+                if($.inArray( el, $scope.allCoursesAvg) === -1 ) {
+                    $scope.allCoursesAvg.push( el );
+                }
+            });
+            //alert($scope.allCoursesAvg)
+            /*$scope.getallAcademicYears = function ( form ) {
+             $scope.allAcademicYears = [ "ChooseAllYears", "2015-2016", "2016-2017", "2017-2018" ];
+             }
+             console.log($scope.allCoursesAvg);*/
+        }
+        else if($scope.form.xaxis == "academicYears")
+        {
+            $scope.tag1 = true;
+            $scope.tag2 = false;
+            $scope.tag3 = false;
+            $scope.tag4 = false;
+
+            $scope.dupacademicYear = [];
+            $scope.allAcademicYears = [];
+
+            for(i = 0;i < $scope.orgCourseDetails.length;i++){
+                $scope.dupacademicYear.push($scope.orgCourseDetails[i].academicYear);
+            }
+            console.log($scope.dupacademicYear);
+
+            $.each($scope.dupacademicYear, function( i, el ){
+                if($.inArray( el, $scope.allAcademicYears) === -1 ) {
+                    $scope.allAcademicYears.push( el );
+                }
+            });
+            /*console.log($scope.allAcademicYears);*/
+
+        }
+        else if($scope.form.xaxis == "Semesters")
+        {
+            $scope.tag2 = true;
+            $scope.tag1 = false;
+            $scope.tag3 = false;
+            $scope.tag4 = false;
+
+            $scope.dupSemesters = [];
+            $scope.allSemesters = [];
+
+            for(i = 0;i < $scope.orgCourseDetails.length;i++){
+                $scope.dupSemesters.push($scope.orgCourseDetails[i].totalSemesters);
+            }
+            console.log($scope.dupSemesters);
+
+            $.each($scope.dupSemesters, function( i, el ){
+                if($.inArray( el, $scope.allSemesters) === -1 ) {
+                    $scope.allSemesters.push( el );
+                }
+            });
+            console.log($scope.allSemesters);
+
+
+
+
+
+        }
+        else if($scope.form.xaxis == "Subjects")
+        {
+            $scope.tag4 = true;
+            $scope.tag1 = false;
+            $scope.tag2 = false;
+            $scope.tag3 = false;
+
+            $scope.dupSubjects = [];
+            $scope.allSubjectAvg = [];
+
+            for(i = 0;i < $scope.marksDetails.length;i++){
+                $scope.dupSubjects.push($scope.marksDetails[i].subject);
+            }
+            console.log($scope.dupSubjects);
+
+            $.each($scope.dupSubjects, function( i, el ){
+                if($.inArray( el, $scope.allSubjectAvg) === -1 ) {
+                    $scope.allSubjectAvg.push( el );
+                }
+            });
+            console.log($scope.allSubjectAvg);
+        }
+
+    }
+//condtion upper field and push lower field and function lower field
+    $scope.getallAcademicYears1 = function ( form ) {
+        $scope.allAcademicYears = [];
+        $scope.dupacademicYear = [];
+        for (i = 0; i < $scope.orgCourseDetails.length; i++) {
+           // alert("Hiii")
+            //alert(form.allCoursesAvg)
+            if ( form.allCoursesAvg == $scope.orgCourseDetails[i].courseName ) {
+               // alert("same: " + $scope.orgCourseDetails[i].courseName)
+                //alert($scope.orgCourseDetails[i].academicYear)
+                $scope.dupacademicYear.push($scope.orgCourseDetails[i].academicYear);
+            }
+
+        }
+        $.each($scope.dupacademicYear, function ( i, el ) {
+            if ($.inArray( el, $scope.allAcademicYears ) === -1) {
+                $scope.allAcademicYears.push( el );
+            }
+        });
+
+    }
+
+    $scope.getAllSemesterAvg = function ( form ) {
+        $scope.dupSemesters = [];
+        $scope.allSemesters = [];
+       // alert(form.allAcademicYears);
+        for (i = 0; i < $scope.orgCourseDetails.length; i++) {
+            if ( form.allAcademicYears == $scope.orgCourseDetails[i].academicYear ) {
+                //alert("same: " + $scope.orgCourseDetails[i].academicYear);
+                $scope.dupSemesters.push($scope.orgCourseDetails[i].totalSemesters);
+            }
+        }
+        $.each($scope.dupSemesters, function( i, el ){
+            if($.inArray( el, $scope.allSemesters) === -1 ) {
+                $scope.allSemesters.push( el );
+            }
+        });
+    }
+    $scope.getAllSubjectAvg = function ( form ) {
+        $scope.dupSubjects = [];
+        $scope.allSubjectAvg = [];
+        //alert(form.allSemesters);
+        for(i = 0;i < $scope.marksDetails.length;i++) {
+            //alert($scope.orgCourseDetails[i].totalSemesters)
+            if ( form.allSemesters == $scope.orgCourseDetails[i].totalSemesters) {
+                //alert("same: " + $scope.orgCourseDetails[i].totalSemesters)
+                $scope.dupSubjects.push($scope.marksDetails[i].subject);
+            }
+        }
+        $.each($scope.dupSubjects, function( i, el ){
+            if($.inArray( el, $scope.allSubjectAvg) === -1 ) {
+                $scope.allSubjectAvg.push( el );
+            }
+        });
+    }
+//condtion upper field and push lower field and function lower field
+    //if academicyears in x-axis
+    $scope.getAllCoursesAvg = function ( form ) {
+
+        $scope.dupCourses = [];
+        $scope.allCoursesAvg = [];
+        //alert( "Hi:" + form.allAcademicYears)
+        for(i = 0;i < $scope.orgCourseDetails.length;i++){
+            //alert($scope.orgCourseDetails[i].academicYear)
+            if ( form.allAcademicYears == $scope.orgCourseDetails[i].academicYear ) {
+                //alert( "same: " + $scope.orgCourseDetails[i].academicYear )
+                $scope.dupCourses.push($scope.orgCourseDetails[i].courseName);
+            }
+
+        }
+        $.each($scope.dupCourses, function( i, el ){
+            if($.inArray( el, $scope.allCoursesAvg) === -1 ) {
+                $scope.allCoursesAvg.push( el );
+            }
+        });
+    }
+
+    $scope.getAllSemesterAvg = function ( form ) {
+
+        $scope.dupSemesters = [];
+        $scope.allSemesters = [];
+        //alert(form.allCoursesAvg);
+        for (i = 0; i < $scope.orgCourseDetails.length; i++) {
+            if (form.allCoursesAvg == $scope.orgCourseDetails[i].courseName) {
+                //alert("same: " + $scope.orgCourseDetails[i].courseName);
+                $scope.dupSemesters.push($scope.orgCourseDetails[i].totalSemesters);
+            }
+        }
+        $.each($scope.dupSemesters, function( i, el ){
+            if($.inArray( el, $scope.allSemesters) === -1 ) {
+                $scope.allSemesters.push( el );
+            }
+        });
+    }
+
+    $scope.getAllSubjectAvg = function ( form ) {
+
+        $scope.dupSubjects = [];
+        $scope.allSubjectAvg = [];
+        //alert(form.allSemesters);
+        for(i = 0;i < $scope.marksDetails.length;i++) {
+            //alert($scope.orgCourseDetails[i].totalSemesters)
+            if ( form.allSemesters == $scope.orgCourseDetails[i].totalSemesters) {
+               // alert("same: " + $scope.orgCourseDetails[i].totalSemesters)
+                $scope.dupSubjects.push($scope.marksDetails[i].subject);
+            }
+        }
+        $.each($scope.dupSubjects, function( i, el ){
+            if($.inArray( el, $scope.allSubjectAvg) === -1 ) {
+                $scope.allSubjectAvg.push( el );
+            }
+        });
+    }
+
+//if semesters in x-axis
+    $scope.getallAcademicYears = function ( form ) {
+        $scope.allAcademicYears = [];
+        $scope.dupacademicYear = [];
+        for (i = 0; i < $scope.orgCourseDetails.length; i++) {
+            //alert(form.allSemesters)
+            if (form.allSemesters == $scope.orgCourseDetails[i].totalSemesters) {
+                //alert("same: " + $scope.orgCourseDetails[i].totalSemesters)
+             $scope.dupacademicYear.push($scope.orgCourseDetails[i].academicYear);
+            }
+
+        }
+        $.each($scope.dupacademicYear, function ( i, el ) {
+            if ($.inArray( el, $scope.allAcademicYears ) === -1) {
+                $scope.allAcademicYears.push( el );
+            }
+        });
+
+    }
+
+
+    $scope.getAllSubjectAvg = function ( form ) {
+
+        $scope.dupSubjects = [];
+        $scope.allSubjectAvg = [];
+        //alert(form.allCoursesAvg);
+        for(i = 0;i < $scope.marksDetails.length;i++) {
+           // alert($scope.orgCourseDetails[i].totalSemesters)
+            if ( form.allCoursesAvg == $scope.orgCourseDetails[i].courseName) {
+                //alert("same: " + $scope.orgCourseDetails[i].courseName)
+                $scope.dupSubjects.push($scope.marksDetails[i].subject);
+            }
+        }
+        $.each($scope.dupSubjects, function( i, el ){
+            if($.inArray( el, $scope.allSubjectAvg) === -1 ) {
+                $scope.allSubjectAvg.push( el );
+            }
+        });
+    }
+
+
+    //if Subjects are in x-AXIS
+
+    $scope.getAllSemesterAvg1 = function ( form ) {
+
+        $scope.dupSemesters = [];
+        $scope.allSemesters = [];
+        //alert(form.allSubjectAvg);
+        for (i = 0; i < $scope.marksDetails.length; i++) {
+            if ( form.allSubjectAvg == $scope.marksDetails[i].subject ) {
+               // alert("same: " + $scope.marksDetails[i].subject);
+                $scope.dupSemesters.push($scope.orgCourseDetails[i].totalSemesters);
+            }
+        }
+        $.each($scope.dupSemesters, function( i, el ){
+            if($.inArray( el, $scope.allSemesters) === -1 ) {
+                $scope.allSemesters.push( el );
+            }
+        });
+    }
+
+    //for y-axis number of students
+    $scope.getFieldsValues = function( form ) {
+
+        if(form.yaxis == "Number of Students in the perticular year") {
+            $scope.marksDetails = []
+            $scope.marksDetails = $scope.myWelcome.marksRespJson;
+            //$scope.myWelcome.marksRespJson.org_name
+
+            //from UI
+            var coursesUi = form.allCoursesAvg;
+            var academicYearUi = form.allAcademicYears;
+            var semsterUi = form.allSemesters;
+            var subjectUi = form.allSubjectAvg;
+
+ 
+            //from response
+            var courses = $scope.marksDetails.course_name
+            var subject = $scope.marksDetails.marks[0].subject
+            var academicYear = $scope.marksDetails.academicYear
+            var semster = $scope.marksDetails.semester
+
+
+            var count = 0;
+
+           // alert($scope.marksDetails)
+            //alert($scope.marksDetails.length)
+
+
+                if ( courses == coursesUi ) {
+                    alert( "first" )
+                    if ( academicYear == academicYearUi ) {
+                        alert( "second" )
+                        if ( semster == semsterUi ) {
+                            alert( "third" )
+                            count++;
+                        }
+                    }
+
+                }
+
+
+               // alert( count )
+
+
+        }
+    }
+
+
+
+
+//nitin end
+
+        $scope.remove = function( ind, type ) {
+            $( '#deleteConfirmation' ).modal( "show" );
+            $scope.No = function()
+            {
+                $( '#deleteConfirmation' ).modal( "hide" );
+            }
+
+            $scope.Yes = function() {
+                console.log( ind );
+                if(type == "LineChart") {
+                    $scope.it = ind;
+                    $scope.ty = type;
+                    var tempInd = $scope.it + $scope.ty;
+                    var elem = document.getElementById( tempInd );
+                    elem.parentNode.removeChild( elem );
+                    $scope.dataBRAssetLine.splice( ind, 1 );
+                    $scope.linewidget.splice( ind, 1 );
+                    $scope.graphArray.splice( ind, 1 );
+                    $scope.linecount = $scope.linecount - 1;
+                }
+                if(type == "PieChart") {
+                    console.log( type );
+                    $scope.it = ind;
+                    $scope.ty = type;
+                    var tempInd = $scope.it + $scope.ty;
+                    var elem = document.getElementById( tempInd );
+                    console.log( elem );
+                    elem.parentNode.removeChild( elem );
+                    $scope.dataPieChartBR.splice( ind, 1 );
+                    $scope.piewidget.splice( ind, 1 );
+                    $scope.graphArray.splice( ind, 1 );
+                    $scope.piecount = $scope.piecount - 1;
+                }
+                if(type == "AreaChart") {
+                    $scope.it = ind;
+                    $scope.ty = type;
+                    var tempInd = $scope.it + $scope.ty;
+                    var elem = document.getElementById( tempInd );
+                    elem.parentNode.removeChild( elem );
+                    $scope.dataBRAsset.splice( ind, 1 );
+                    $scope.areawidget.splice( ind, 1 );
+                    $scope.graphArray.splice( ind, 1 );
+                    $scope.areacount = $scope.areacount - 1;
+                }
+            }
+
+
+
+        };
+
+
+
+        $scope.piecount = -1;
+        $scope.linecount = -1;
+        $scope.areacount = -1;
+    $scope.graph = function() {
+    //alert("hiii");
+        $scope.onloadtable = true;
+        $scope.impbtn = false;
+        $scope.widGraph = true;
+        $scope.para = false;
+        var a = "";
+        var b = "";
+console.log($scope.form.xaxis);
+        if($scope.form.xaxis == "AcademicYears"){
+            a = "academicYears";
+        }else if($scope.form.xaxis == "Semesters") {
+            a = "semesters";
+        }else if($scope.form.xaxis == "Courses"){
+            //alert("hi");
+            a = "courses";
+        }else if($scope.form.xaxis == "Subjects"){
+            a = "subjects";
+        }else{
+            console.log( "no data" );
+        }
+        console.log( a );
+
+      //  $scope.yaxis = [ "Number of Students in the perticular year", "Overall Average Marks parcentage on all years", "Overall pass percentage", "Overall fail percentage" ];
+        console.log($scope.form.yaxis);
+        if($scope.form.yaxis == "Number of Students in the perticular year") {
+            var b = "academicYears1";
+        }else if ($scope.form.yaxis == "Overall Average Marks parcentage on all years"){
+            b = "semesters1";
+        } else if ($scope.form.yaxis == "Overall pass percentage"){
+            b = "courses1";
+           // alert("hello");
+        }else if($scope.form.yaxis == "Overall fail percentage"){
+            b = "subjects1";
+        }else{
+            console.log( "no data" );
+        }
+        console.log( b );
+
+
+
+        //var values = []
+        $scope.areaChartData = [];
+        $scope.piearray = [];
+        $scope.subjects = [];
+        console.log( a );
+        console.log( b );
+        console.log(values[a]);
+        console.log(values1[b]);
+        //console.log(values[b]);
+        for (var i = 0; i < values[a].length; i++) {
+
+
+            $scope.subjects[i] = {
+                "x": values[a][i],
+                "y": values1[b][i]
+            }
+            $scope.piearray[i] = {
+                "key": values[a][i],
+                "y": values1[b][i]
+            }
+
+                $scope.areaChartData.push(new Array(values[a][i], values1[b][i]));
+
+
+
+        }
+     // alert(JSON.stringify($scope.areaChartData ));
+        console.log( $scope.areaChartData );
+        console.log( $scope.subjects );
+        $scope.subjectdata = $scope.subjects;
+        if ($scope.form.chart == "AreaChart") {
+
+            //$scope.areawidget.push($scope.form.widget);
+            $scope.areacount = $scope.areacount + 1;
+            $scope.areashow = true;
+            if ($scope.linecount < 0) {
+                $scope.lineshow = false;
+            } else {
+                $scope.lineshow = true;
+            }
+
+            if ($scope.piecount < 0) {
+                $scope.pieshow = false;
+            } else {
+                $scope.pieshow = true;
+            }
+            $scope.areawidget[$scope.areacount] = $scope.form.widget;
+
+            $scope.optionsarea = {
+                chart: {
+                    showControls: false,
+                    type: "stackedAreaChart",
+                    height: 430,
+                    margin: {
+                        top: 20,
+                        right: 20,
+                        bottom: 30,
+                        left: 40
+                    },
+                    x: function( d ) {
+                        return d[0];
+                    },
+                    y: function( d ) {
+                        return d[1];
+                    },
+
+                    useVoronoi: false,
+                    clipEdge: true,
+                    duration: 100,
+                    useInteractiveGuideline: true,
+                    xAxis: {
+                        showMaxMin: false,
+                        tickFormat: function( d ) {
+                            return d3.format( ",.2f" )( d );
+                        }
+                    },
+                    yAxis: {
+                        tickFormat: function( d ) {
+                            return d3.format( ",.2f" )( d );
+                        }
+                    },
+                    zoom: {
+                        enabled: true,
+                        scaleExtent: [ 1, 10 ],
+                        useFixedDomain: false,
+                        useNiceScale: false,
+                        horizontalOff: false,
+                        verticalOff: true,
+                        unzoomEventType: "dblclick.zoom"
+                    }
+                }
+            };
+
+
+
+            var keyLabel1 = $scope.form.xaxis + " Vs " + $scope.form.yaxis;
+            console.log( $scope.areaChartData );
+
+            $scope.dataBRAsset[$scope.areacount] = [];
+            if($scope.form.xaxis == "AcademicYears"){
+                $scope.dataBRAsset[$scope.areacount].push({
+                    "key": keyLabel1,
+                    "values": $scope.areaChartData,
+                    "color": "rgb( 6, 140, 53 )"
+                });
+            }else if($scope.form.xaxis == "Semesters") {
+                $scope.dataBRAsset[$scope.areacount].push({
+                    "key": keyLabel1,
+                    "values": $scope.areaChartData,
+                    "color": "rgb( 241, 102, 35)"
+                });
+            }else if($scope.form.xaxis == "Courses"){
+                $scope.dataBRAsset[$scope.areacount].push({
+                    "key": keyLabel1,
+                    "values": $scope.areaChartData,
+                    "color": "rgb(31, 119, 180)"
+                });
+            }else if($scope.form.xaxis == "Subjects") {
+                $scope.dataBRAsset[$scope.areacount].push({
+                    "key": keyLabel1,
+                    "values": $scope.areaChartData,
+                    "color": "rgb(255,165,0)"
+                });
+            }
+
+            $scope.graphArray.push({
+                wid: $scope.areawidget[$scope.areacount],
+                type: 'AreaChart',
+                options: $scope.optionsarea,
+                data: $scope.dataBRAsset[$scope.areacount]});
+console.log( $scope.graphArray);
+        }
+        if ($scope.form.chart == "LineChart") {
+
+            //$scope.linewidget.push($scope.form.widget);
+            $scope.linecount = $scope.linecount + 1;
+            $scope.lineshow = true;
+            if ($scope.areacount < 0) {
+                $scope.areashow = false;
+            } else {
+                $scope.areashow = true;
+            }
+
+            if ($scope.piecount < 0) {
+                $scope.pieshow = false;
+            } else {
+                $scope.pieshow = true;
+            }
+
+            $scope.getLineChartCount = function( lc ) {
+
+                return new Array( lc );
+            }
+            $scope.linewidget[$scope.linecount] = $scope.form.widget;
+
+
+            $scope.line = {
+                chart: {
+                    zoom: {},
+                    type: 'lineChart',
+                    height: 420,
+                    margin: {
+                        top: 20,
+                        right: 20,
+                        bottom: 40,
+                        left: 55
+                    },
+                    x: function( d ) {
+                        return d.x;
+                    },
+                    y: function( d ) {
+                        return d.y;
+                    },
+                    useInteractiveGuideline: true,
+                    dispatch: {
+
+                        stateChange: function( e ) {
+                            console.log( "stateChange" );
+                        },
+                        changeState: function( e ) {
+                            console.log( "changeState" );
+                        },
+                        tooltipShow: function( e ) {
+                            console.log( "tooltipShow" );
+                        },
+                        tooltipHide: function( e ) {
+                            console.log( "tooltipHide" );
+                        }
+                    },
+                    xAxis: {
+                        axisLabel: $scope.form.xaxis
+                    },
+                    yAxis: {
+                        axisLabel: $scope.form.yaxis,
+                        tickFormat: function( d ) {
+                            return d3.format( '.02f' )( d );
+                        },
+                        axisLabelDistance: 35
+                    },
+                    callback: function( chart ) {
+                        console.log( "!!! lineChart callback !!!" );
+                    }
+
+                },
+                title: {
+                    enable: true,
+                    text: ""
+                },
+            };
+            var keyLabel = $scope.form.xaxis + " Vs " + $scope.form.yaxis;
+
+
+
+
+            if($scope.form.xaxis == "AcademicYears"){
+                $scope.subDataObj = [ {
+                    values: $scope.subjects, // values - represents the
+                    key: keyLabel, // key - the name of the series.
+                    color: "rgb( 6, 140, 53 )", // color - optional: choose your own
+                    strokeWidth: 3
+                }
+
+                ];
+            }else if($scope.form.xaxis == "Semesters") {
+                $scope.subDataObj = [ {
+                    values: $scope.subjects, // values - represents the
+                    key: keyLabel, // key - the name of the series.
+                    color: "rgb( 241, 102, 35)", // color - optional: choose your own
+                    strokeWidth: 3
+                }
+
+                ];
+            }else if($scope.form.xaxis == "Courses"){
+                $scope.subDataObj = [ {
+                    values: $scope.subjects, // values - represents the
+                    key: keyLabel, // key - the name of the series.
+                    color: "rgb(31, 119, 180)", // color - optional: choose your own
+                    strokeWidth: 3
+                }
+
+                ];
+            }else if($scope.form.xaxis == "Subjects") {
+                $scope.subDataObj = [ {
+                    values: $scope.subjects, // values - represents the
+                    key: keyLabel, // key - the name of the series.
+                    color: "rgb(255,165,0)", // color - optional: choose your own
+                    strokeWidth: 3
+                }
+
+                ];
+            }
+
+
+
+
+
+            $scope.dataBRAssetLine[$scope.linecount] = $scope.subDataObj;
+            //alert(JSON.stringify( $scope.subDataObj));
+            //alert(JSON.stringify( $scope.dataBRAssetLine[$scope.linecount]));
+            $scope.graphArray.push( { wid: $scope.linewidget[$scope.linecount], type: 'LineChart', options: $scope.line, data: $scope.dataBRAssetLine[$scope.linecount]});
+            console.log( $scope.graphArray );
+
+        }
+
+        if ($scope.form.chart == "PieChart") {
+
+            $scope.piecount = $scope.piecount + 1;
+            $scope.pieshow = true;
+            if ($scope.areacount < 0) {
+                $scope.areashow = false;
+            } else {
+                $scope.areashow = true;
+            }
+
+            if ($scope.linecount < 0) {
+                $scope.lineshow = false;
+            } else {
+                $scope.lineshow = true;
+            }
+
+            $scope.getNumber = function( pc ) {
+                return new Array( pc );
+            }
+
+            $scope.piewidget[$scope.piecount] = $scope.form.widget;
+            $scope.optionsPie = {
+                chart: {
+                    type: "pieChart",
+                    height: 430,
+                    x: function( d ) {
+                        return d.key;
+                    },
+                    y: function( d ) {
+                        return d.y;
+                    },
+                    showLabels: true,
+                    duration: 500,
+                    labelThreshold: 0.01,
+                    labelSunbeamLayout: true,
+                    legend: {
+                        margin: {
+                            top: 5,
+                            right: 35,
+                            bottom: 5,
+                            left: 0
+                        }
+                    }
+                }
+            };
+
+            $scope.dataPieChartBR[$scope.piecount] = $scope.piearray; /*[ {
+                key: "Maths",
+                y: 60,
+                "color": "rgb( 205, 21, 51 )"
+            }, {
+                key: "physics",
+                y: 70,
+                "color": "rgb( 63, 81, 181 )"
+            }, {
+                key: "chemistry",
+                y: 80,
+                "color": "rgb( 255, 87, 34 )"
+            }, {
+                key: "Science",
+                y: 100,
+                "color": "rgb( 6, 140, 53 )"
+            } ];*/
+            $scope.graphArray.push( { wid: $scope.piewidget[$scope.piecount], type: 'PieChart', options: $scope.optionsPie, data: $scope.dataPieChartBR[$scope.piecount]});
+
+
+        }
+
+    }
+   /* $scope.graph = function() {
+        $scope.impbtn = false;
+        $scope.widGraph = true;
+
+
+
+        $scope.data = {
+            "orgId": $scope.organId,
+            "xaxis": $scope.form.xaxis,
+            "yaxis": $scope.form.yaxis,
+            "chartType": $scope.form.chart,
+            "wid": $scope.form.widget
+        }
+
+        $http( {
+            method: 'POST',
+            url: '/widget',
+            data: JSON.stringify($scope.data),
+            headers: { 'Content-Type': 'application/json'}
+        }).then(function mySucces( response ) {
+            // alert( "Got Response!" );
+            $scope.myWelcome = {};
+            $scope.myWelcome = response.data;
+            //alert("data" + JSON.stringify($scope.myWelcome))
+            console.log(JSON.stringify($scope.myWelcome))
+            console.log($scope.myWelcome)
+            if ($scope.myWelcome[0].status == "success") {
+                //alert( "widget" )
+                console.log(response.data);
+                //alert( $scope.myWelcome.error )
+                //$scope.onload();
+
+            }
+            else {
+                console.log(response.data);
+                //alert( "widget1" )
+                //window.location = successUrl;
+            }
+        }, function myError( response ) {
+            //alert("Erorr");
+            $scope.myWelcome = response.statusText;
+            //alert($scope.myWelcome);
+            //alert( "widget2" )
+        });
+
+
+
+        var a = $scope.form.xaxis.toLowerCase();
+        console.log( a );
+
+        var b = $scope.form.yaxis.toString().toLowerCase();
+        console.log( b );
+
+        var values = []
+        $scope.areaChartData = [];
+        $scope.subjects = [];
+        for (var i = 0; i < values[a].length; i++) {
+            // for(var j=0;j<values[b].length;j++) {
+
+            $scope.subjects[i] = {
+                "x": values[a][i],
+                "y": values[b][i]
+            }
+            $scope.areaChartData.push( new Array(values[a][i], values[b][i]) );
+            // }
+
+        }
+        console.log( $scope.subjects );
+        $scope.subjectdata = $scope.subjects;
+
+
+        if ($scope.form.chart == "PieChart") {
+
+            $scope.piecount = $scope.piecount + 1;
+            $scope.pieshow = true;
+            if ($scope.areacount < 0) {
+                $scope.areashow = false;
+            } else {
+                $scope.areashow = true;
+            }
+
+            if ($scope.linecount < 0) {
+                $scope.lineshow = false;
+            } else {
+                $scope.lineshow = true;
+            }
+
+            $scope.getNumber = function( pc ) {
+                return new Array( pc );
+            }
+
+            $scope.piewidget[$scope.piecount] = $scope.form.widget;
+            $scope.optionsPie = {
+                chart: {
+                    type: "pieChart",
+                    height: 430,
+                    x: function( d ) {
+                        return d.key;
+                    },
+                    y: function( d ) {
+                        return d.y;
+                    },
+                    showLabels: true,
+                    duration: 500,
+                    labelThreshold: 0.01,
+                    labelSunbeamLayout: true,
+                    legend: {
+                        margin: {
+                            top: 5,
+                            right: 35,
+                            bottom: 5,
+                            left: 0
+                        }
+                    }
+                }
+            };
+
+            $scope.dataPieChartBR[$scope.piecount] = [ {
+                key: "Maths",
+                y: 60,
+                "color": "rgb( 205, 21, 51 )"
+            }, {
+                key: "physics",
+                y: 70,
+                "color": "rgb( 63, 81, 181 )"
+            }, {
+                key: "chemistry",
+                y: 80,
+                "color": "rgb( 255, 87, 34 )"
+            }, {
+                key: "Science",
+                y: 100,
+                "color": "rgb( 6, 140, 53 )"
+            } ];
+            $scope.graphArray.push( { wid: $scope.piewidget[$scope.piecount], type: 'PieChart', options: $scope.optionsPie, data: $scope.dataPieChartBR[$scope.piecount]});
+
+
+        }
+
+        if ($scope.form.chart == "LineChart") {
+
+            //$scope.linewidget.push($scope.form.widget);
+            $scope.linecount = $scope.linecount + 1;
+            $scope.lineshow = true;
+            if ($scope.areacount < 0) {
+                $scope.areashow = false;
+            } else {
+                $scope.areashow = true;
+            }
+
+            if ($scope.piecount < 0) {
+                $scope.pieshow = false;
+            } else {
+                $scope.pieshow = true;
+            }
+
+            $scope.getLineChartCount = function( lc ) {
+
+                return new Array( lc );
+            }
+            $scope.linewidget[$scope.linecount] = $scope.form.widget;
+
+
+            $scope.line = {
+                chart: {
+                    zoom: {},
+                    type: 'lineChart',
+                    height: 420,
+                    margin: {
+                        top: 20,
+                        right: 20,
+                        bottom: 40,
+                        left: 55
+                    },
+                    x: function( d ) {
+                        return d.x;
+                    },
+                    y: function( d ) {
+                        return d.y;
+                    },
+                    useInteractiveGuideline: true,
+                    dispatch: {
+
+                        stateChange: function( e ) {
+                            console.log( "stateChange" );
+                        },
+                        changeState: function( e ) {
+                            console.log( "changeState" );
+                        },
+                        tooltipShow: function( e ) {
+                            console.log( "tooltipShow" );
+                        },
+                        tooltipHide: function( e ) {
+                            console.log( "tooltipHide" );
+                        }
+                    },
+                    xAxis: {
+                        axisLabel: $scope.form.xaxis
+                    },
+                    yAxis: {
+                        axisLabel: $scope.form.yaxis,
+                        tickFormat: function( d ) {
+                            return d3.format( '.02f' )( d );
+                        },
+                        axisLabelDistance: 35
+                    },
+                    callback: function( chart ) {
+                        console.log( "!!! lineChart callback !!!" );
+                    }
+
+                },
+                title: {
+                    enable: true,
+                    text: ""
+                },
+            };
+
+            $scope.line = {
+                chart: {
+                    zoom: {},
+                    type: 'lineChart',
+                    height: 420,
+                    margin: {
+                        top: 20,
+                        right: 20,
+                        bottom: 40,
+                        left: 55
+                    },
+                    x: function( d ) {
+                        return d.x;
+                    },
+                    y: function( d ) {
+                        return d.y;
+                    },
+                    useInteractiveGuideline: true,
+                    dispatch: {
+
+                        stateChange: function( e ) {
+                            console.log( "stateChange" );
+                        },
+                        changeState: function( e ) {
+                            console.log( "changeState" );
+                        },
+                        tooltipShow: function( e ) {
+                            console.log( "tooltipShow" );
+                        },
+                        tooltipHide: function( e ) {
+                            console.log( "tooltipHide" );
+                        }
+                    },
+                    xAxis: {
+                        axisLabel: $scope.form.xaxis
+                    },
+                    yAxis: {
+                        axisLabel: $scope.form.yaxis,
+                        tickFormat: function( d ) {
+                            return d3.format( '.02f' )( d );
+                        },
+                        axisLabelDistance: 35
+                    },
+                    callback: function( chart ) {
+                        console.log( "!!! lineChart callback !!!" );
+                    }
+
+                },
+                title: {
+                    enable: true,
+                    text: ""
+                },
+            };
+            var keyLabel = $scope.form.xaxis + " Vs " + $scope.form.yaxis;
+            $scope.subDataObj = [ {
+                values: $scope.subjects, // values - represents the
+                key: keyLabel, // key - the name of the series.
+                color: '#e43234', // color - optional: choose your own
+                strokeWidth: 3
+            }
+
+            ];
+
+            $scope.dataBRAssetLine[$scope.linecount] = $scope.subDataObj;
+            $scope.graphArray.push( { wid: $scope.linewidget[$scope.linecount], type: 'LineChart', options: $scope.line, data: $scope.dataBRAssetLine[$scope.linecount]});
+            console.log( $scope.graphArray );
+
+        }
+
+        if ($scope.form.chart == "AreaChart") {
+
+            //$scope.areawidget.push($scope.form.widget);
+            $scope.areacount = $scope.areacount + 1;
+            $scope.areashow = true;
+            if ($scope.linecount < 0) {
+                $scope.lineshow = false;
+            } else {
+                $scope.lineshow = true;
+            }
+
+            if ($scope.piecount < 0) {
+                $scope.pieshow = false;
+            } else {
+                $scope.pieshow = true;
+            }
+            $scope.areawidget[$scope.areacount] = $scope.form.widget;
+
+            $scope.optionsarea = {
+                chart: {
+                    showControls: false,
+                    type: "stackedAreaChart",
+                    height: 430,
+                    margin: {
+                        top: 20,
+                        right: 20,
+                        bottom: 30,
+                        left: 40
+                    },
+                    x: function( d ) {
+                        return d[0];
+                    },
+                    y: function( d ) {
+                        return d[1];
+                    },
+
+                    useVoronoi: false,
+                    clipEdge: true,
+                    duration: 100,
+                    useInteractiveGuideline: true,
+                    xAxis: {
+                        showMaxMin: false,
+                        tickFormat: function( d ) {
+                            return d3.format( ",.2f" )( d );
+                        }
+                    },
+                    yAxis: {
+                        tickFormat: function( d ) {
+                            return d3.format( ",.2f" )( d );
+                        }
+                    },
+                    zoom: {
+                        enabled: true,
+                        scaleExtent: [ 1, 10 ],
+                        useFixedDomain: false,
+                        useNiceScale: false,
+                        horizontalOff: false,
+                        verticalOff: true,
+                        unzoomEventType: "dblclick.zoom"
+                    }
+                }
+            };
+
+
+
+            var keyLabel1 = $scope.form.xaxis + " Vs " + $scope.form.yaxis;
+            console.log( $scope.areaChartData );
+            $scope.dataBRAsset[$scope.areacount] = [ {
+                "key": keyLabel1,
+                "values": $scope.areaChartData,
+                "color": "rgb( 6, 140, 53 )"
+            } ];
+            $scope.graphArray.push({
+                wid: $scope.areawidget[$scope.areacount],
+                type: 'AreaChart',
+                options: $scope.optionsarea,
+                data: $scope.dataBRAsset[$scope.areacount]});
+
+        }
+
+        console.log( $scope.graphArray );
+
+    };*/
+
+        $scope.samplefunc = function() {
+            $scope.impbtn = false;
+
+            $scope.orgTable = true;
+        }
+    $scope.fileNameChanged = function( ele )
+
+    {
+        //$scope.csvresult = [];
+        //var orgId = "org_1";
+        var orgId = $scope.organId;
+        var lengthOfCourses = 0;
+        var academicYear1 = [];
+        var fileName = document.getElementById( "fileinput" ).files[0].name;
+
+        $scope.IsVisible = true;
+        $scope.showit = false;
+        var files = ele.files;
+
+        var _validFileExtensions = [ ".csv" ];
+        if ( ele.type == "file" ) {
+            var sFileName = ele.value;
+            if ( sFileName.length > 0 ) {
+                var blnValid = false;
+                var uniqueproperty = false;
+                for ( var j = 0; j < _validFileExtensions.length; j++ ) {
+                    var sCurExtension = _validFileExtensions[j];
+                    if ( sFileName.substr( sFileName.length - sCurExtension.length, sCurExtension.length ).toLowerCase()
+                        == sCurExtension.toLowerCase() ) {
+                        blnValid = true;
+                        break;
+                    }
+                }
+
+                if ( !blnValid ) {
+
+
+                  //  alert( "Sorry, " + fileName + " is invalid, allowed extensions are: " + _validFileExtensions.join( ", " ) );
+                    ele.value = "";
+                    return false;
+                }
+            }
+        }
+
+        if ( files ) {
+            var r = new FileReader();
+            r.onload = function( e ) {
+
+                var contents = e.target.result;
+                var lines = contents.split( "\n" );
+
+                var kpns = [];
+
+                var headers = lines[0].split( "," );
+
+                for (var i = 1; i < lines.length; i++) {
+                    if (!lines[i] || lines[i] == "") {
+                        continue;
+                    }
+                    var currentline = lines[i].split( "," );
+                    var obj = {};
+                    for (var j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = currentline[j];
+                    }
+                    $scope.csvresult.push( obj );
+                    //console.log(JSON.stringify(csvresult))
+
+                }
+                console.log(JSON.stringify($scope.csvresult));
+                //$scope.dummy = [];
+
+                for(i = 0; i < $scope.csvresult.length; i++ )
+                {
+                    var index1 = $scope.dummy.map(
+                        function( obj ) {
+                            return obj.courseName;
+                        }).indexOf($scope.csvresult[i].courseName);
+                       console.log( index1 )
+
+                    var index2 = $scope.dummy.map(
+                        function( obj ) {
+                            return obj.academicYear;
+                        }).indexOf( $scope.csvresult[i].academicYear );
+
+                    console.log( index1 )
+
+                    if( index1 == -1 && index2 == -1)
+                    {
+
+                        $scope.dummy.push($scope.csvresult[i]);
+                    }
+
+
+                }
+                console.log(JSON.stringify($scope.dummy));
+                //alert(JSON.stringify($scope.dummy));
+                //$route.reload();
+                var unique = {};
+                var academicYear1 = [];
+                for( var i in $scope.csvresult ){
+                    if( typeof(unique[$scope.csvresult[i].academicYear]) == "undefined"){
+                        academicYear1.push($scope.csvresult[i].academicYear);
+                    }
+                    unique[$scope.csvresult[i].academicYear] = 0;
+                }
+
+
+                console.log(JSON.stringify(academicYear1.length))
+                console.log( JSON.stringify( academicYear1 ) )
+                lengthOfCourses = $scope.csvresult.length;
+                console.log( JSON.stringify( lengthOfCourses ) );
+                $scope.impbtn = false;
+                $scope.orgTable = true;
+
+                console.log( $scope.impbtn);
+                console.log(  $scope.orgTable);
+                //$scope.orgtable = true;
+
+
+                $http({
+                    method: 'POST',
+                    url: '/import1',
+                    data: JSON.stringify($scope.data),
+                    headers: { 'Content-Type': 'application/json'}
+                }).then(function mySucces( response ) {
+                   // alert( "Got Response!" );
+
+                    $scope.myWelcome = {};
+                    $scope.myWelcome = response.data;
+                    //alert("data" + JSON.stringify($scope.myWelcome))
+                    console.log(JSON.stringify($scope.myWelcome))
+                    if( $scope.myWelcome.status == "success" ) {
+                        //console.log("aloo");
+                       // alert($scope.myWelcome.error)
+                        //window.location = successUrl;
+                    }
+                    else{
+                       // console.log("fdh");
+                        //window.location = successUrl;
+                    }
+                }, function myError( response ) {
+                    //alert("Erorr");
+                    //console.log("fdgdh");
+                    $scope.myWelcome = response.statusText;
+                    //alert($scope.myWelcome);
+                });
+                //r.readAsText(files[0]);
+
+            }
+            r.readAsText(files[0]);
+
+
+
+        }
+
+        //alert("data" + JSON.stringify($scope.data) )
+        console.log(JSON.stringify($scope.data));
+
+    }
+    $scope.fileNameChanged1 = function( ele )
+
+    {
+        $scope.csvresult = [];
+        var orgId = "org_1";
+        var lengthOfCourses = 0;
+        var academicYear1 = [];
+        var fileName = document.getElementById( "fileinput" ).files[0].name;
+
+        $scope.IsVisible = true;
+        $scope.showit = false;
+        var files = ele.files;
+
+        var _validFileExtensions = [ ".csv" ];
+        if ( ele.type == "file" ) {
+            var sFileName = ele.value;
+            if ( sFileName.length > 0 ) {
+                var blnValid = false;
+                var uniqueproperty = false;
+                for ( var j = 0; j < _validFileExtensions.length; j++ ) {
+                    var sCurExtension = _validFileExtensions[j];
+                    if ( sFileName.substr( sFileName.length - sCurExtension.length, sCurExtension.length ).toLowerCase()
+                        == sCurExtension.toLowerCase() ) {
+                        blnValid = true;
+                        break;
+                    }
+                }
+
+                if ( !blnValid ) {
+              //      alert( "Sorry, " + fileName + " is invalid, allowed extensions are: " + _validFileExtensions.join( ", " ) );
+                    ele.value = "";
+                    return false;
+                }
+            }
+        }
+
+        if ( files ) {
+            var r = new FileReader();
+            r.onload = function ( e ) {
+
+                var contents = e.target.result;
+                var lines = contents.split( "\n" );
+
+                var kpns = [];
+
+                var headers = lines[ 0 ].split( "," );
+
+                for (var i = 1; i < lines.length; i++) {
+                    if (!lines[i] || lines[i] == "") {
+                        continue;
+                    }
+                    var currentline = lines[i].split( "," );
+                    var obj = {};
+                    for (var j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = currentline[j];
+                    }
+                    $scope.csvresult.push( obj );
+                    //console.log(JSON.stringify(csvresult))
+                    console.log(JSON.stringify($scope.csvresult))
+                }
+
+                var unique = {};
+                var academicYear1 = [];
+                for( var i in $scope.csvresult ){
+                    if( typeof(unique[$scope.csvresult[i].academicYear]) == "undefined"){
+                        academicYear1.push( $scope.csvresult[i].academicYear );
+                    }
+                    unique[$scope.csvresult[i].academicYear] = 0;
+                }
+
+
+                console.log( JSON.stringify( academicYear1.length ))
+                console.log(JSON.stringify( academicYear1 ))
+                lengthOfCourses = $scope.csvresult.length;
+                console.log( JSON.stringify( lengthOfCourses ) );
+                $scope.data = {
+                    "orgId": orgId,
+                    "lengthOfCourses": 3,
+                    "courses": $scope.csvresult,
+                }
+                //alert("email " + $scope.email)
+                //alert("data" + JSON.stringify($scope.data) )
+                $( '#myTable' ).dataTable();
+
+                console.log($scope.data);
+                $http({
+                    method: 'POST',
+                    url: '/import',
+                    data: JSON.stringify($scope.data),
+                    headers: { 'Content-Type': 'application/json'}
+                }).then(function mySucces( response ) {
+                    //alert( "Got Response!" );
+                    $scope.myWelcome = {};
+                    $scope.myWelcome = response.data;
+                   // alert("data" + JSON.stringify($scope.myWelcome))
+                    console.log(JSON.stringify($scope.myWelcome))
+                    if( $scope.myWelcome.status == "success" ) {
+                        //alert( "hi11" )
+                        console.log(response.data);
+                        //alert( $scope.myWelcome.error )
+                        //window.location = successUrl;
+                    }
+                    else{
+                        console.log(response.data);
+                        //window.location = successUrl;
+                    }
+                }, function myError( response ) {
+                    //alert("Erorr");
+                    $scope.myWelcome = response.statusText;
+                    //alert($scope.myWelcome);
+                });
+                //r.readAsText(files[0]);
+
+            }
+
+            r.readAsText(files[0]);
+
+
+
+        }
+
+        //alert("data" + JSON.stringify( $scope.data ) )
+        console.log(JSON.stringify( $scope.data ));
+
+    }
+    $scope.save = function() {
+
+     // $scope.courseShow = true;
+        $scope.impbtn = false;
+
+        $scope.orgTable = false;
+        $scope.editTable = false;
+        $scope.widGraph = false;
+       // alert( "hi" )
+        for (var i = 0; i < $scope.dummy.length; i++) {
+            delete $scope.dummy[i][ '$$hashKey' ];
+        }
+
+        console.log( JSON.stringify($scope.csvresult ))
+
+        var lengthOfCourses = $scope.dummy.length;
+        var orgId = $scope.organId;
+
+        console.log( orgId );
+        //var orgId = "org_2";
+        $scope.data = {
+            "orgId": orgId,
+            "lengthOfCourses": lengthOfCourses,
+            "courses": $scope.dummy,
+        }
+
+        $http( {
+            method: 'POST',
+            url: '/import',
+            data: JSON.stringify($scope.data),
+            headers: { 'Content-Type': 'application/json'}
+        }).then(function mySucces( response ) {
+           // alert( "Got Response!" );
+            $scope.myWelcome = {};
+            $scope.myWelcome = response.data;
+           // alert("data" + JSON.stringify($scope.myWelcome))
+            console.log(JSON.stringify($scope.myWelcome))
+            console.log($scope.myWelcome)
+            if ($scope.myWelcome[0].status == "success") {
+                $scope.courseShow = false;
+                $scope.studentshow = false;
+                //alert( "hi11" )
+                console.log(response.data);
+                //alert( $scope.myWelcome.error )
+                $( "#savepopup" ).modal( "show" );
+                $scope.onload();
+
+                //window.location = successUrl;
+            }
+            else {
+                console.log(response.data);
+                //window.location = successUrl;
+            }
+        }, function myError( response ) {
+            //alert("Erorr");
+            $scope.myWelcome = response.statusText;
+            //alert($scope.myWelcome);
+        });
+
+
+    }
+
+
+    $scope.editsave = function() {
+        //$scope.csvresult = [];
+//alert("hello1");
+        $( "#savepopup" ).modal( "show" );
+        $scope.courseShow = false;
+        $scope.impbtn = false;
+         $scope.orgTable = false;
+         $scope.editTable = false;
+         for (var i = 0; i < $scope.csvresult.length; i++) {
+         delete $scope.csvresult[i][ '$$hashKey' ];
+         }
+         console.log( JSON.stringify($scope.csvresult ))
+         var lengthOfCourses = $scope.csvresult.length;
+         var orgId = $scope.organId;
+         console.log( orgId );
+         var orgId = "org_2";
+         $scope.data = {
+         "orgId": orgId,
+         "lengthOfCourses": lengthOfCourses,
+         "courses": $scope.csvresult
+         }
+         $http( {
+         method: 'POST',
+         url: '/import',
+         data: JSON.stringify($scope.data),
+         headers: { 'Content-Type': 'application/json'}
+          }).then(function mySucces( response ) {
+        //alert( "Got Response!" );
+         $scope.myWelcome = {};
+         $scope.myWelcome = response.data;
+        // alert("data" + JSON.stringify($scope.myWelcome))
+        console.log(JSON.stringify($scope.myWelcome))
+         console.log($scope.myWelcome)
+         if ($scope.myWelcome[0].status == "success") {
+        //alert( "hi11" )
+         console.log(response.data);
+             $( "#savepopup" ).modal( "show" );
+         //alert( $scope.myWelcome.error );
+         $scope.onload();
+
+         //window.location = successUrl;
+         }
+         else {
+             //alert("hai");
+             $( "#savepopup" ).modal( "show" );
+         console.log(response.data);
+         window.location = successUrl;
+         }
+         }), function myError( response ) {
+            // alert("hello");
+             $( "#savepopup" ).modal( "show" );
+         //alert("Erorr");
+        $scope.myWelcome = response.statusText;
+        // alert($scope.myWelcome);        });
+    };
+    }
+    $scope.home = function(){
+
+        location.reload();
+
+    }
+
+
+
+    $scope.editOrganisation = function() {
+        // $scope.courseShow = true;
+        // $scope.impbtn = false;
+        // $scope.courseShow = false;
+        if ($scope.flag == 1) {
+            $scope.danger = true
+            $scope.import = true;
+            $scope.sample = true;
+            $scope.welcome = false;
+
+        }
+        else {
+
+            $( "#savepopup" ).modal( "hide" );
+            $scope.editTable = true;
+
+            $scope.courseShow = false;
+            $scope.studentshow = false;
+            $scope.impbtn = false;
+
+            $scope.orgTable = false;
+            //$scope.editTable = false;
+            $scope.widGraph = false;
+            // alert( "hi" )
+            for (var i = 0; i < $scope.csvresult.length; i++) {
+                delete $scope.csvresult[i]['$$hashKey'];
+            }
+
+            console.log(JSON.stringify($scope.csvresult))
+
+            var lengthOfCourses = $scope.csvresult.length;
+            // console.log($scope.myWelcome.dashboard.orgId);
+            var orgId = $scope.organId;
+            console.log( orgId );
+            $scope.editData = [];
+            // var orgId = "org_1";
+            $scope.data = {
+                "orgId": orgId
+            }
+
+            $http({
+                method: 'POST',
+                url: '/importGet',
+                data: JSON.stringify($scope.data),
+                headers: { 'Content-Type': 'application/json'}
+            }).then( function mySucces( response ) {
+                // alert( "Got Response!" );
+                $scope.myWelcome = {};
+                $scope.myWelcome = response.data;
+                //alert("data" + JSON.stringify($scope.myWelcome))
+                console.log(JSON.stringify($scope.myWelcome))
+                console.log(response.data);
+                if ($scope.myWelcome.status == "success") {
+                    //alert( "hi11" )
+                    $scope.editData = $scope.myWelcome.courses;
+                    console.log($scope.editData);
+                    // $( "#savepopup" ).modal( "show" );
+                    //  alert( $scope.myWelcome.error )
+                    //window.location = successUrl;
+                }
+                else {
+                    console.log( "Fail import" );
+                    //window.location = successUrl;
+                }
+            }, function myError( response ) {
+                //alert("Erorr");
+                $scope.myWelcome = response.statusText;
+                //alert($scope.myWelcome);
+            });
+
+
+        }
+    }
+    
+
+    $scope.save1 = function() {
+
+        console.log(JSON.stringify($scope.csvresult2))
+        //var orgId = "org_0";
+        //var orgId = $scope.organId;
+
+       // var org_name = "SREC";
+        var marks = [];
+        var keys = [];
+        var mark1 = {};
+        var Subject;
+        var Mark;
+        var studentobj = {}
+        var students = [];
+        var sub_keys = [];
+
+
+        /*   for(var i in $scope.csvresult2 ) {
+         var key = i;
+         var val = $scope.csvresult2[i];
+         for (var j in val) {
+         var sub_key = j;
+         var sub_val = val[j];
+
+         }
+         }*/
+        for (var k1 = 0; k1 < $scope.csvresult2.length; k1++) {
+            delete $scope.csvresult2[k1]['$$hashKey'];
+        }
+        for (k2 = 0; k2 < $scope.csvresult2.length - 1; k2++) {
+            keys = Object.keys($scope.csvresult2[k2]);
+        }
+
+        console.log( JSON.stringify( keys ) );
+
+        for (i = 0; i < $scope.csvresult2.length; i++) {
+            marks = [];
+            for (j = 0; j < keys.length; j++) {
+                console.log(JSON.stringify(keys[j]))
+
+
+                if (keys[j] != "regNumber" && keys[j] != "Student") {
+                    mark1 = {};
+                    console.log(JSON.stringify(keys[j]))
+                    mark1.Subject = keys[j];
+
+                    mark1.Mark = $scope.csvresult2[i][keys[j]];
+                    marks.push( mark1 );
+
+
+                }
+
+            }
+
+            //marks.push(mark1);
+            // console.log(JSON.stringify(mark1));
+            console.log( marks );
+            var orgId = $scope.organId;
+
+            studentobj = {
+
+                "roll_no": $scope.csvresult2[i].regNumber,
+                "student_name": $scope.csvresult2[i].Student,
+                "academicYear": $scope.form.academic,
+                "course_name": $scope.form.course,
+                "semester": $scope.form.semester,
+                "numberOfSubject": 3,
+                "marks": marks,
+            }
+
+
+            students.push( studentobj );
+
+        }
+
+        $scope.data =
+            {
+
+                "orgId": orgId,
+                "org_name": $scope.organisation,
+                "numberOfStudents": $scope.csvresult2.length,
+                "students": students
+            }
+
+        console.log(JSON.stringify( students ));
+        console.log(JSON.stringify( $scope.data ));
+        console.log(JSON.stringify( $scope.organisation ));
+
+
+        console.log(JSON.stringify( marks ));
+        $http( {
+            method: 'POST',
+            url: '/importStudent',
+            data: $scope.data,
+            headers: { 'Content-Type': 'application/json'}
+        }).then(function mySucces( response ) {
+            //alert( "Got Response!" );
+            $scope.myWelcome = {};
+            $scope.myWelcome = response.data;
+           // alert("data" + JSON.stringify($scope.myWelcome))
+            console.log(JSON.stringify($scope.myWelcome))
+            if ($scope.myWelcome[0].status == "success") {
+
+                $( "#savepopup" ).modal( "show" );
+            }
+            else {
+                //console.log( "fail" );
+
+                //window.location = successUrl;
+            }
+        }, function myError( response ) {
+            //alert("Erorr");
+            $scope.myWelcome = response.statusText;
+            //alert($scope.myWelcome);
+        });
+
+
+    }
+
+    $scope.fileNameChanged2 = function( ele ) {
+        //$scope.csvresult2 = [];
+        //var orgId = "org_0";
+        var lengthOfCourses = 0;
+        var academicYear1 = [];
+       // var fileName = document.getElementById( "fileinput" ).file[0].name;
+
+        $scope.IsVisible = true;
+        $scope.showit = false;
+        var files = ele.files;
+
+        var _validFileExtensions = [ ".csv" ];
+        if (ele.type == "file") {
+            var sFileName = ele.value;
+            if (sFileName.length > 0) {
+                var blnValid = false;
+                var uniqueproperty = false;
+                for (var j = 0; j < _validFileExtensions.length; j++) {
+                    var sCurExtension = _validFileExtensions[j];
+                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase()
+                        == sCurExtension.toLowerCase()) {
+                        blnValid = true;
+                        break;
+                    }
+                }
+
+                if (!blnValid) {
+                    alert( "Sorry, " + fileName + " is invalid, allowed extensions are: " + _validFileExtensions.join( ", " ) );
+                    ele.value = "";
+                    return false;
+                }
+            }
+        }
+
+        if (files) {
+            var r = new FileReader();
+            r.onload = function( e ) {
+
+                var contents = e.target.result;
+                var lines = contents.split( "\n" );
+
+                var kpns = [];
+
+                var headers = lines[0].split( "," );
+
+                for (var i = 1; i < lines.length; i++) {
+                    if (!lines[i] || lines[i] == "") {
+                        continue;
+                    }
+                    var currentline = lines[i].split( "," );
+                    var obj = {};
+                    for (var j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = currentline[j];
+                    }
+                    $scope.csvresult2.push( obj );
+                    //console.log(JSON.stringify(csvresult))
+                    console.log(JSON.stringify($scope.csvresult2))
+                }
+                var orgId = $scope.organId;
+
+                var keys = Object.keys($scope.csvresult2);
+              //  alert( keys );
+               // $scope.Student = true;
+                //$route.reload();
+                $scope.Student = true;
+                var unique = {};
+                var academicYear1 = [];
+                for (var i in $scope.csvresult2) {
+                    if (typeof(unique[$scope.csvresult2[i].academicYear]) == "undefined") {
+                        academicYear1.push($scope.csvresult2[i].academicYear);
+                    }
+                    unique[$scope.csvresult2[i].academicYear] = 0;
+                }
+
+
+                console.log(JSON.stringify( academicYear1.length ))
+                console.log(JSON.stringify( academicYear1 ))
+                lengthOfCourses = $scope.csvresult.length;
+                console.log(JSON.stringify( lengthOfCourses ));
+                $scope.courseShow = false;
+                $scope.studentshow = false;
+                $scope.data = {
+                    "orgId": orgId,
+                    "lengthOfCourses": 3,
+                    "courses": $scope.csvresult,
+                }
+                //alert("email " + $scope.email)
+               // alert("data" + JSON.stringify($scope.data))
+                //$scope.student = truconsole.log($scope.data);
+                $http({
+                    method: 'POST',
+                    url: '/import',
+                    data: JSON.stringify($scope.data),
+                    headers: { 'Content-Type': 'application/json'}
+                }).then(function mySucces( response ) {
+                   // alert( "Got Response!" );
+                    $scope.myWelcome = {};
+                    $scope.myWelcome = response.data;
+                   // alert("data" + JSON.stringify($scope.myWelcome))
+                    console.log(JSON.stringify($scope.myWelcome))
+                    if ( $scope.myWelcome.status == "success" ) {
+                       // alert( "hi11" )
+                       // alert($scope.myWelcome.error)
+                        //window.location = successUrl;
+                    }
+                    else {
+
+                        //window.location = successUrl;
+                    }
+                }, function myError( response ) {
+                    //alert("Erorr");
+                    $scope.myWelcome = response.statusText;
+                    //alert($scope.myWelcome);
+                });
+                //r.readAsText(files[0]);
+
+
+            }
+
+            $route.reload();
+            r.readAsText(files[0]);
+
+            $scope.Student = true;
+
+        }
+
+        //alert("data" + JSON.stringify( $scope.data ) )
+        console.log(JSON.stringify($scope.data));
+
+    }
+
+
+
+});
+app.filter( 'capitalize', function() {
+    return function( input ) {
+        return ( !!input ) ? input.charAt( 0 ).toUpperCase() + input.substr( 1 ).toLowerCase() : '';
+    }
+});
+

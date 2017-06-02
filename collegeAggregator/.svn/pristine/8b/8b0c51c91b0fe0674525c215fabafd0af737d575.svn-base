@@ -1,0 +1,46 @@
+/**
+ * Created by Nitin on 4/13/2017.
+ */
+
+function RegistorController($scope, $http) {
+    alert("Insert into js");
+
+    $scope.feedback = '';
+
+    $scope.postRegistorFunction = function(registorUrl, successUrl) {
+
+        alert("Inerst into js function");
+        $scope.data = {
+            firstName: $scope.firstName,
+            lastName: $scope.lastName,
+            email: $scope.email,
+            password: $scope.password,
+            role: $scope.role,
+            Organization: $scope.Organization,
+
+
+        };
+        //alert("email " + $scope.email)
+
+
+        alert("data" + JSON.stringify($scope.data) )
+        console.log($scope.data);
+
+        $http({
+            method: 'POST',
+            url: '/',
+            data: $scope.data,
+            headers : { 'Content-Type': 'application/json' }
+        }).then(function mySucces(response) {
+            alert("Registor successfully!");
+            //$scope.myWelcome = response.data;
+        }, function myError(response) {
+            alert("Erorr");
+            $scope.myWelcome = response.statusText;
+            alert($scope.myWelcome);
+        });
+
+
+
+    };
+}

@@ -1,0 +1,44 @@
+/**
+ * Created by Nitin on 4/13/2017.
+ */
+
+function LoginController($scope, $http) {
+    alert("Insert into js");
+
+    $scope.feedback = '';
+
+    $scope.postLoginFunction = function(loginUrl, successUrl) {
+
+        alert("Inerst into js function");
+        $scope.data = {
+            email: $scope.email,
+            password: $scope.password,
+
+        };
+        alert("email " + $scope.email)
+
+
+        alert("data" + JSON.stringify($scope.data) )
+        console.log($scope.data);
+        $scope.successUrl = successUrl;
+        $http({
+            method: 'POST',
+            url: '/login',
+            data: $scope.data,
+            headers : { 'Content-Type': 'application/json' }
+        }).then(function mySucces(response) {
+            alert("response" + $scope.myWelcome)
+            alert("Got Response!");
+            $scope.myWelcome = response.data;
+            //window.location=successUrl;
+            window.location = successUrl;
+        }, function myError(response) {
+            alert("Erorr");
+            $scope.myWelcome = response.statusText;
+            alert($scope.myWelcome);
+        });
+
+
+
+    };
+}

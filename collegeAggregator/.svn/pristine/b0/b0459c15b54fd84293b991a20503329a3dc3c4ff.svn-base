@@ -1,0 +1,143 @@
+
+package views.html
+
+import play.twirl.api._
+import play.twirl.api.TemplateMagic._
+
+
+     object index1_Scope0 {
+import models._
+import controllers._
+import play.api.i18n._
+import views.html._
+import play.api.templates.PlayMagic._
+import play.api.mvc._
+import play.api.data._
+
+class index1 extends BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with play.twirl.api.Template0[play.twirl.api.HtmlFormat.Appendable] {
+
+  /**/
+  def apply/*1.2*/():play.twirl.api.HtmlFormat.Appendable = {
+    _display_ {
+      {
+
+
+Seq[Any](format.raw/*1.4*/("""
+"""),_display_(/*2.2*/main("Login")/*2.15*/ {_display_(Seq[Any](format.raw/*2.17*/("""
+
+
+"""),format.raw/*5.1*/("""<!DOCTYPE html>
+    <html>
+        <head>
+            <title></title>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+            <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+         <style>
+           body """),format.raw/*14.17*/("""{"""),format.raw/*14.18*/("""
+                    """),format.raw/*15.21*/("""background-image: url('"""),_display_(/*15.45*/routes/*15.51*/.Assets.at("images/sample.png")),format.raw/*15.82*/("""');
+           """),format.raw/*16.12*/("""}"""),format.raw/*16.13*/("""
+           """),format.raw/*17.12*/(""".form_bg """),format.raw/*17.21*/("""{"""),format.raw/*17.22*/("""
+               """),format.raw/*18.16*/("""background-color:#eee;
+               color:#666;
+               padding:20px;
+               border-radius:10px;
+               position: absolute;
+               border:1px solid #fff;
+               margin: auto;
+               top: 0;
+               right: 0;
+               bottom: 0;
+               left: 0;
+               width: 320px;
+               height: 320px;
+           """),format.raw/*31.12*/("""}"""),format.raw/*31.13*/("""
+           """),format.raw/*32.12*/(""".align-center """),format.raw/*32.26*/("""{"""),format.raw/*32.27*/("""
+               """),format.raw/*33.16*/("""text-align:center;
+           """),format.raw/*34.12*/("""}"""),format.raw/*34.13*/("""
+
+
+
+           """),format.raw/*38.12*/("""</style>
+        </head>
+
+    <body>
+        <div data-ng-app="" data-ng-controller="LoginController">
+
+            <div class="container">
+                <div class="row">
+                    <div class="form_bg">
+
+                        <form  role="form" method="POST" data-ng-submit="postLoginFunction('"""),_display_(/*48.94*/routes/*48.100*/.Application.all()),format.raw/*48.118*/("""', '"""),_display_(/*48.123*/routes/*48.129*/.Application.registor()),format.raw/*48.152*/("""')">
+                            <h2 class="text-center">Login Page</h2>
+                            <br/>
+                            <div class="form-group">
+                                <input type="email" ng-model="email" name="email" class="form-control"  id="userid" placeholder="User id">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" ng-model="password" name="password" class="form-control" id="pwd" placeholder="Password">
+                            </div>
+
+                            <br/>
+
+                            <div class="align-center">
+                                <button type="submit" class="btn btn-default" id="login">Login</button>
+                                <br/>
+                                <br>
+
+                                <p>New Member? <a href=""""),_display_(/*66.58*/routes/*66.64*/.Application.registor()),format.raw/*66.87*/("""" class="">Sign up</a></p>
+
+                                <br/>
+
+
+
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <script type="text/javascript" src=""""),_display_(/*84.46*/routes/*84.52*/.Assets.at("javascripts/authenticate.js")),format.raw/*84.93*/("""">
+
+
+        </script>
+
+    </body>
+    </html>
+
+""")))}))
+      }
+    }
+  }
+
+  def render(): play.twirl.api.HtmlFormat.Appendable = apply()
+
+  def f:(() => play.twirl.api.HtmlFormat.Appendable) = () => apply()
+
+  def ref: this.type = this
+
+}
+
+
+}
+
+/**/
+object index1 extends index1_Scope0.index1
+              /*
+                  -- GENERATED --
+                  DATE: Thu Apr 13 19:22:56 IST 2017
+                  SOURCE: D:/Scala/Scala_program/collegeAggregator/app/views/index1.scala.html
+                  HASH: 390a89cd34b7316c6abbc0f542abfa2bb17f69b0
+                  MATRIX: 522->1|618->3|645->5|666->18|705->20|734->23|1300->561|1329->562|1378->583|1429->607|1444->613|1496->644|1539->659|1568->660|1608->672|1645->681|1674->682|1718->698|2130->1082|2159->1083|2199->1095|2241->1109|2270->1110|2314->1126|2372->1156|2401->1157|2444->1172|2781->1482|2797->1488|2837->1506|2870->1511|2886->1517|2931->1540|3854->2436|3869->2442|3913->2465|4211->2736|4226->2742|4288->2783
+                  LINES: 20->1|25->1|26->2|26->2|26->2|29->5|38->14|38->14|39->15|39->15|39->15|39->15|40->16|40->16|41->17|41->17|41->17|42->18|55->31|55->31|56->32|56->32|56->32|57->33|58->34|58->34|62->38|72->48|72->48|72->48|72->48|72->48|72->48|90->66|90->66|90->66|108->84|108->84|108->84
+                  -- GENERATED --
+              */
+          

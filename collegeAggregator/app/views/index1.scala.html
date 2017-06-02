@@ -1,0 +1,75 @@
+@()
+@main("Login") {
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="description" content="">
+            <meta name="author" content="">
+            <title></title>
+            <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+
+
+            <link rel="stylesheet" media="screen" href="@routes.Assets.at("vendor/bootstrap/css/bootstrap.min.css")">
+            <link rel="stylesheet" media="screen" href="@routes.Assets.at("vendor/metisMenu/metisMenu.min.css")">
+            <link rel="stylesheet" media="screen" href="@routes.Assets.at("dist/css/sb-admin-2.css")">
+            <link rel="stylesheet" media="screen" href="@routes.Assets.at("vendor/morrisjs/morris.css")">
+            <link rel="stylesheet" type="text/css" href="@routes.Assets.at("vendor/font-awesome/css/font-awesome.min.css")">
+
+            <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+            <style type="text/css">
+                    body {
+                        background: url('@routes.Assets.at("images/collegeimage4.jpg")');
+                        /*background-repeat: no-repeat;*/
+                        background-position: initial;
+                        background-size: 100%;
+
+                    }
+
+
+            </style>
+
+        </head>
+
+        <body>
+            <script type="text/javascript"></script>
+            <div data-ng-app="" data-ng-controller="LoginController">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="login-panel panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Please Sign In</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <form id="login-form"  method="post" role="form" style="display: block;">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <input class="form-control" ng-model="email" id="userid" placeholder="E-mail" name="email" type="email" autofocus="">
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="form-control" ng-model="password" id="pwd" placeholder="Password" name="password" type="password" value="">
+                                            </div>
+                                            <div style="color:red;text-align:center;" ng-show="flagg" >{{errormessage}}</div>
+                                            <div class="form-group">
+                                                <input type="submit" name="login-submit" id="login"  class="btn btn-lg btn-success btn-block" data-ng-click="postLoginFunction('@routes.Application.all()', '@routes.Application.dashboard()')" value="Log In">
+                                            </div>
+                                                <!-- Change this to a button or input when using this as a form -->
+                                           @* <a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>*@
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript" src="@routes.Assets.at("javascripts/authenticate.js")"></script>
+        </body>
+    </html>
+
+}

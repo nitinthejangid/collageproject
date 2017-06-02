@@ -1,0 +1,88 @@
+
+// @GENERATOR:play-routes-compiler
+// @SOURCE:D:/Scala/Scala_program/collegeAggregator/conf/routes
+// @DATE:Thu Apr 13 18:29:33 IST 2017
+
+import play.api.routing.JavaScriptReverseRoute
+import play.api.mvc.{ QueryStringBindable, PathBindable, Call, JavascriptLiteral }
+import play.core.routing.{ HandlerDef, ReverseRouteContext, queryString, dynamicString }
+
+
+import _root_.controllers.Assets.Asset
+
+// @LINE:6
+package controllers.javascript {
+  import ReverseRouteContext.empty
+
+  // @LINE:10
+  class ReverseAssets(_prefix: => String) {
+
+    def _defaultPrefix: String = {
+      if (_prefix.endsWith("/")) "" else "/"
+    }
+
+  
+    // @LINE:10
+    def at: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.Assets.at",
+      """
+        function(file) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "assets/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("file", file)})
+        }
+      """
+    )
+  
+  }
+
+  // @LINE:6
+  class ReverseApplication(_prefix: => String) {
+
+    def _defaultPrefix: String = {
+      if (_prefix.endsWith("/")) "" else "/"
+    }
+
+  
+    // @LINE:14
+    def resetPassword: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.Application.resetPassword",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "reset"})
+        }
+      """
+    )
+  
+    // @LINE:6
+    def all: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.Application.all",
+      """
+        function() {
+          return _wA({method:"GET", url:"""" + _prefix + """"})
+        }
+      """
+    )
+  
+    // @LINE:7
+    def registor: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.Application.registor",
+      """
+        function() {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "registor"})
+        }
+      """
+    )
+  
+    // @LINE:12
+    def authenticate: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.Application.authenticate",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "login"})
+        }
+      """
+    )
+  
+  }
+
+
+}

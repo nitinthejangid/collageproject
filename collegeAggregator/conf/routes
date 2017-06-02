@@ -1,0 +1,26 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.all()
+
+POST  /import                controllers.Application.importinsert()
+POST  /importStudent         controllers.Application.importStudent()
+
+POST     /registor1                   controllers.Application.register()
+POST     /session                   controllers.Application.sessionApi()
+POST     /fetchuser                   controllers.Application.fetchuserDetailsApi()
+GET     /dashboard                  controllers.Application.dashboard()
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+POST  /importGet         controllers.Application.importGetData()
+POST  /deleteWidget         controllers.Application.deleteWidgetApi()
+POST  /login         controllers.Application.authenticate()
+POST  /widget         controllers.Application.WidgetApi()
+POST  /logout         controllers.Application.logoutApi()
+POST  /reset         controllers.Application.resetPassword()
+POST  /yaxis1         controllers.Application.yaxis()
+POST  /getAllMembers          controllers.Application.GetAllMembers()
+POST  /editFlag               controllers.Application.editFlag()

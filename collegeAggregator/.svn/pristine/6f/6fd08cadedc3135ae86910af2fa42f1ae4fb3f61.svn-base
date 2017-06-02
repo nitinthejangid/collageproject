@@ -1,0 +1,68 @@
+
+package views.html
+
+import play.twirl.api._
+import play.twirl.api.TemplateMagic._
+
+
+     object main_Scope0 {
+import models._
+import controllers._
+import play.api.i18n._
+import views.html._
+import play.api.templates.PlayMagic._
+import play.api.mvc._
+import play.api.data._
+
+class main extends BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with play.twirl.api.Template2[String,Html,play.twirl.api.HtmlFormat.Appendable] {
+
+  /**/
+  def apply/*1.2*/(title: String)(content: Html):play.twirl.api.HtmlFormat.Appendable = {
+    _display_ {
+      {
+
+
+Seq[Any](format.raw/*1.32*/("""
+
+"""),format.raw/*3.1*/("""<!DOCTYPE html>
+<html>
+    <head>
+        <title>"""),_display_(/*6.17*/title),format.raw/*6.22*/("""</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div style="padding:20px">
+        """),_display_(/*14.10*/content),format.raw/*14.17*/("""
+        """),format.raw/*15.9*/("""</div>
+    </body>
+</html>"""))
+      }
+    }
+  }
+
+  def render(title:String,content:Html): play.twirl.api.HtmlFormat.Appendable = apply(title)(content)
+
+  def f:((String) => (Html) => play.twirl.api.HtmlFormat.Appendable) = (title) => (content) => apply(title)(content)
+
+  def ref: this.type = this
+
+}
+
+
+}
+
+/**/
+object main extends main_Scope0.main
+              /*
+                  -- GENERATED --
+                  DATE: Thu Apr 13 12:36:07 IST 2017
+                  SOURCE: D:/Scala/Scala_program/collegeAggregator/app/views/main.scala.html
+                  HASH: de819109643dc693569033cf5f3c324dc8b9a395
+                  MATRIX: 530->1|655->31|683->33|759->83|784->88|1306->583|1334->590|1370->599
+                  LINES: 20->1|25->1|27->3|30->6|30->6|38->14|38->14|39->15
+                  -- GENERATED --
+              */
+          

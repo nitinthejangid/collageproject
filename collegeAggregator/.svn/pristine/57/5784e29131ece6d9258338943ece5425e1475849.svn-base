@@ -1,0 +1,89 @@
+@()
+@main("Login") {
+
+
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title></title>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+            <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+            <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+            <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+         <style>
+           body {
+                    background-image: url('@routes.Assets.at("images/sample.png")');
+           }
+           .form_bg {
+               background-color:#eee;
+               color:#666;
+               padding:20px;
+               border-radius:10px;
+               position: absolute;
+               border:1px solid #fff;
+               margin: auto;
+               top: 0;
+               right: 0;
+               bottom: 0;
+               left: 0;
+               width: 320px;
+               height: 320px;
+           }
+           .align-center {
+               text-align:center;
+           }
+
+
+
+           </style>
+        </head>
+
+    <body>
+        <div data-ng-app="" data-ng-controller="LoginController">
+
+            <div class="container">
+                <div class="row">
+                    <div class="form_bg">
+
+                        <form  role="form" method="POST" data-ng-submit="postLoginFunction('@routes.Application.all', '@routes.Application.registor')">
+                            <h2 class="text-center">Login Page</h2>
+                            <br/>
+                            <div class="form-group">
+                                <input type="email" ng-model="email" name="email" class="form-control"  id="userid" placeholder="User id">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" ng-model="password" name="password" class="form-control" id="pwd" placeholder="Password">
+                            </div>
+
+                            <br/>
+
+                            <div class="align-center">
+                                <button type="submit" class="btn btn-default" id="login">Login</button>
+                                <br/>
+                                <br>
+
+                                <p>New Member? <a href="@routes.Application.all()" class="">Sign up</a></p>
+
+                                <br/>
+
+
+
+                            </div>
+
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/authenticate.js")"></script>
+
+    </body>
+    </html>
+
+}

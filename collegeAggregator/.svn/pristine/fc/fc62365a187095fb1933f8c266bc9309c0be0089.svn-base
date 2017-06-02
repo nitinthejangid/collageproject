@@ -1,0 +1,1886 @@
+@()
+@main("dashboard") {
+
+<!DOCTYPE html>
+<html lang="en" ng-app="College-WebApp">
+
+<head>
+
+   <!-- Custom Fonts -->
+    @*<link href='@routes.Assets.at("/stylesheets/font-awesome/css/font-awesome.min.css")' rel="stylesheet" type="text/css">
+	<link href='@routes.Assets.at("/stylesheets/css/sb-admin.css")' rel="stylesheet">
+	<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/jquery-ui2.css" type="text/css" />
+	<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/jquery-ui.css"  type="text/css" />
+	<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/bootstrap.css" type="text/css" />*@
+	@*<link href='@routes.Assets.at("/stylesheets/css/bootstrap.min.css")' rel="stylesheet">*@
+
+	<link href='@routes.Assets.at("/stylesheets/css/sb-admin.css")' rel="stylesheet">
+
+	<link href='@routes.Assets.at("/stylesheets/css/nv.d3-1.8.3.min.css")' rel="stylesheet">
+
+	<link href='@routes.Assets.at("/stylesheets/font-awesome/css/font-awesome.min.css")' rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/jquery-ui2.css" type="text/css" />
+	@*<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/angular-material.min.css" type="text/css" />*@
+	<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/jquery-ui.css"  type="text/css" />
+	<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="http://d13iq1y4fpsxi8.cloudfront.net/css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href='@routes.Assets.at("/stylesheets/css/datatables.bootstrap.css")'>
+	<link rel="stylesheet" href='@routes.Assets.at("/stylesheets/css/styles.css")'>
+
+<style>
+		.dropdown-submenu{position:relative;}
+		.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+		.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
+		.dropdown-submenu:hover>a:after{border-left-color:#555;}
+		.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+
+
+
+		text {
+	font: 12px sans-serif;
+}
+
+svg {
+	display: block;
+}
+
+html, body, #chart1, svg {
+	margin: 0px;
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+}
+
+.dashed {
+	stroke-dasharray: 5, 5;
+}
+
+rect {
+	fill: #fff;
+}
+
+.axis {
+	font-family: inherit;
+	font-size: 10px;
+}
+
+.legend {
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+circle, .line {
+	fill: none;
+	stroke: #328de4; /* blue for userIncome*/
+	stroke-width: 2.5px;
+}
+
+circle {
+	fill: white;
+	fill-opacity: 1;
+	stroke-width: 1px;
+	cursor: move;
+}
+
+circle1, .line1 {
+	fill: none;
+	stroke: #e43234; /* red for expense */
+	stroke-width: 2.5px;
+}
+
+circle1 {
+	stroke: #e43234;
+	stroke-width: 1px;
+	fill: white;
+	fill-opacity: 1;
+	cursor: move;
+}
+
+circle2, .line2 {
+	fill: none;
+	stroke: #32e2e2; /* steel blue for spouseIncome */
+	stroke-width: 2.5px;
+}
+
+circle2 {
+	stroke: #32e2e2;
+	stroke-width: 1px;
+	fill: white;
+	fill-opacity: 1;
+	cursor: move;
+}
+
+circle3, .line3 {
+	fill: none;
+	stroke: #b0c10c; /* green for combinedIncome */
+	stroke-width: 2.5px;
+}
+
+circle3 {
+	stroke: #b0c10c;
+	stroke-width: 1px;
+	fill: white;
+	fill-opacity: 1;
+	cursor: move;
+}
+
+div.tooltip {
+	position: absolute;
+	text-align: center;
+	width: auto;
+	height: auto;
+	padding: 2px;
+	font: 12px sans-serif;
+	background: white;
+	border: 1px solid black;
+	color: black;
+	pointer-events: none;
+}
+input[type="file"] {
+	 display: none;
+ }
+
+.custom-file-upload {
+	border: 1px solid #ccc;
+	display: inline-block;
+	padding: 6px 12px;
+	cursor: pointer;
+	color: #fff;
+	background-color: #337ab7;
+}
+
+
+
+
+		table, th , td  {
+			border: 1px solid grey;
+			border-collapse: collapse;
+			padding: 5px;
+		}
+		table tr:nth-child(odd) {
+			background-color: #f1f1f1;
+		}
+		table tr:nth-child(even) {
+			background-color: #ffffff;
+		}
+
+
+</style>
+
+	<script src= '@routes.Assets.at("/javascripts/controllers/Dashboard.js")'></script>
+@*	<script src='@routes.Assets.at("/javascripts/js/angular.min.js")'></script>*@
+
+
+
+
+</head>
+
+<body ng-controller="dashboardController" ng-cloak>
+	<form  data-ng-init="onload()">
+	<div id="wrapper" style="width:100%; margin-left: -7%;">
+
+		<!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:#f1f1f1;border-color: #e7e7e7; " role="navigation">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Dashboard</span> <span class="icon-bar"></span>
+					<span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"  style="font-size: x-large;color:#333;">BI Analytic Tools</a>
+			</div>
+			<div class="navbar-header" style="     padding-left: 30%;">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Organisation</span> <span class="icon-bar"></span>
+					<span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" style="font-size: x-large;color:#333;margin-left: -40%;">{{organisation | capitalize}}</a>
+
+			</div>
+
+
+            <ul class="nav navbar-right top-nav" style="
+				margin-right: -2%;">
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style=" background-color:#f1f1f1; "><i class="fa fa-user"  style="font-style: normal; "></i> {{firstName | capitalize}}({{roles | capitalize}}) <b class="caret" style="font-style: normal;color: #333"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" ng-show="buttonshow" ng-click="register()"><i class="fa fa-fw fa-user"></i> {{button}}</a>
+                        </li>
+
+                        <li>
+                            <a href="#" ng-click="logout()" ><i class="fa fa-fw fa-power-off" ng-click="logout()"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+			<ul class="nav navbar-right top-nav" style="
+				margin-right: -2%;">
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" style=" background-color:#f1f1f1 ;font-style: normal;"><i class="fa fa-tachometer" style="font-style: normal;"> Dashboard</i> <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#"  ng-click="clear()"><i class="fa fa-refresh" ng-click="clear()"></i> clear </a>
+						</li>
+
+						<li>
+							<a href="#" ng-click="open()" ><i class="glyphicon glyphicon-plus" ng-click="open()"></i> Add widget</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+
+			<ul class="nav navbar-right top-nav" style="
+				margin-right: -2%;">
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" style=" background-color:#f1f1f1;"><i class="fa fa-upload"  style="font-style: normal;"> My Org</i> <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="#" style="background-color:#f1f1f1;" ng-click="orgImport()"><i class="fa fa-cloud-upload" ng-click="orgImport()"></i> Orgdetails Upload </a>
+						</li>
+
+						<li>
+							<a href="#" ng-click="studentImport()" ><i class="fa fa-cloud-upload" ng-click="studentImport()"></i> Student Upload</a>
+						</li>
+
+						<li>
+							<a href="#" ng-click="editOrganisation()" ><i class="fa fa-cloud-upload" ng-click="editOrganisation()"></i> EditOrg Details</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+			<ul class="nav navbar-right top-nav"  style="
+				margin-right: -2%;" >
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"  ng-click="home()"style=" background-color:#f1f1f1; "><i class="fa fa-user"  style="font-style: normal; "></i> Home </a>
+
+			</ul>
+
+
+
+
+			@*<ul class="nav navbar-right top-nav" >
+
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" style=" background-color: black;"><i class="icon-dashboard"> Org</i> <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Import</a>
+							<ul class="dropdown-menu">
+								<li><a href="">Org Import</a></li>
+								<li><a href="">Student Import</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>*@
+
+			@*<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Org <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+
+					<li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Import</a>
+						<ul class="dropdown-menu">
+							<li><a href="">Org Import</a></li>
+							<li><a href="">Student Import</a></li>
+						</ul>
+					</li>
+
+				</ul>
+			</li>*@
+
+		</nav>
+
+
+			<!--widget model -->
+		<div class="modal fade" id="widget" role="dialog">
+			<div class="modal-dialog" style="margin-left: -23%;">
+
+					<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Widget Selection</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label class="form-label"> Widget Name</label> <input
+						type="text" ng-model="form.widget" class="form-control"
+						placeholder="Enter Widget Name" />
+						</div>
+						<form>
+							<div ng-show="tag">
+								<div class="form-group">
+									<label class="form-label">Xaxis</label>
+
+									<select style="width:100%" ng-model="form.xaxis" ng-change="getWidgetDetails()" class="form-control" >
+										<option ng-repeat="x in xaxis" value="{{ x }}">{{ x }}</option>
+									</select>
+								</div>
+							</div>
+
+
+		@*					<div ng-show="tag1">
+
+								<div class="form-group">
+									<label class="form-label">Select AcademicYear</label>
+
+									<select style="width:100%" ng-model="form.allAcademicYears" ng-change="getAllCoursesAvg(form)" class="form-control">
+										<option ng-repeat="y in allAcademicYears" value="{{ y }}">{{ y }}</option>
+									</select>
+
+								</div>
+								<div class="form-group">
+									<label class="form-label">Select Courses</label>
+									<select style="width:100%" class="form-control" ng-model="form.allCoursesAvg" ng-change="getAllSemesterAvg(form)">
+										<option ng-repeat="courses in allCoursesAvg" value="{{ courses }}">{{ courses }}</option>
+									</select>
+
+								</div>
+								<div class="form-group">
+									<label class="form-label">Select Semesters</label>
+
+									<select style="width:100%" class="form-control" ng-model="form.allSemesters" ng-change="getAllSubjectAvg(form)">
+										<option ng-repeat="sem in allSemesters" value="{{ sem }}">{{ sem }}</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label class="form-label">Select Subjects</label>
+
+									<select style="width:100%" class="form-control" ng-model="form.allSubjectAvg" >
+										<option ng-repeat="sub in allSubjectAvg" value="{{ sub }}">{{ sub }}</option>
+									</select>
+								</div>
+
+							</div>
+
+							<div ng-show="tag2">
+
+								<div class="form-group">
+									<label class="form-label">Select Semesters</label>
+									<select style="width:100%" class="form-control" ng-model="form.allSemesters" ng-change="getallAcademicYears(form)">
+										<option ng-repeat="sem in allSemesters" value="{{ sem }}">{{ sem }}</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label class="form-label">Select AcademicYear</label>
+
+									<select style="width:100%" ng-model="form.allAcademicYears" ng-change="getAllCoursesAvg(form)" class="form-control">
+										<option ng-repeat="y in allAcademicYears" value="{{ y }}">{{ y }}</option>
+									</select>
+
+								</div>
+								<div class="form-group">
+									<label class="form-label">Select Courses</label>
+									<select style="width:100%" class="form-control" ng-model="form.allCoursesAvg" ng-change="getAllSubjectAvg(form)">
+										<option ng-repeat="courses in allCoursesAvg" value="{{ courses }}">{{ courses }}</option>
+									</select>
+
+								</div>
+								<div class="form-group">
+									<label class="form-label">Select Subjects</label>
+
+									<select style="width:100%" class="form-control" ng-model="form.allSubjectAvg" >
+										<option ng-repeat="sub in allSubjectAvg" value="{{ sub }}">{{ sub }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div ng-show="tag3">
+
+								<div class="form-group">
+									<label class="form-label">Select Courses</label>
+									<select style="width:100%" class="form-control" ng-model="form.allCoursesAvg" ng-change="getallAcademicYears1(form)">
+										<option ng-repeat="courses in allCoursesAvg" value="{{ courses }}">{{ courses }}</option>
+									</select>
+
+								</div>
+
+								<div class="form-group">
+									<label class="form-label">Select AcademicYear</label>
+
+									<select style="width:100%" ng-model="form.allAcademicYears" ng-change="getAllSemesterAvg(form)" class="form-control">
+										<option ng-repeat="y in allAcademicYears" value="{{ y }}">{{ y }}</option>
+									</select>
+
+								</div>
+
+								<div class="form-group">
+									<label class="form-label">Select Semesters</label>
+									<select style="width:100%" class="form-control" ng-model="form.allSemesters" ng-change="getAllSubjectAvg(form)">
+										<option ng-repeat="sem in allSemesters" value="{{ sem }}">{{ sem }}</option>
+									</select>
+								</div>
+
+
+								<div class="form-group">
+									<label class="form-label">Select Subjects</label>
+
+									<select style="width:100%" class="form-control" ng-model="form.allSubjectAvg" >
+										<option ng-repeat="sub in allSubjectAvg" value="{{ sub }}">{{ sub }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div ng-show="tag4">
+								<div class="form-group">
+									<label class="form-label">Select Subjects</label>
+
+									<select style="width:100%" class="form-control" ng-model="form.allSubjectAvg"  ng-change="getAllSemesterAvg1(form)">
+										<option ng-repeat="sub in allSubjectAvg" value="{{ sub }}">{{ sub }}</option>
+									</select>
+								</div>
+
+								<div class="form-group">
+									<label class="form-label">Select Semesters</label>
+									<select style="width:100%" class="form-control" ng-model="form.allSemesters" ng-change="getallAcademicYears(form)">
+										<option ng-repeat="sem in allSemesters" value="{{ sem }}">{{ sem }}</option>
+									</select>
+								</div>
+
+								<div class="form-group">
+									<label class="form-label">Select AcademicYear</label>
+
+									<select style="width:100%" ng-model="form.allAcademicYears" ng-change="getAllCoursesAvg(form)" class="form-control">
+										<option ng-repeat="y in allAcademicYears" value="{{ y }}">{{ y }}</option>
+									</select>
+
+								</div>
+								<div class="form-group">
+									<label class="form-label">Select Courses</label>
+									<select style="width:100%" class="form-control" ng-model="form.allCoursesAvg" >
+										<option ng-repeat="courses in allCoursesAvg" value="{{ courses }}">{{ courses }}</option>
+									</select>
+
+								</div>
+							</div>*@
+						</form>
+
+						<div class="form-group">
+							<label class="form-label">Yaxis</label> <select
+						style="width: 100%" class="form-control" ng-model="form.yaxis" ng-change="getFieldsValues(form)">
+							<option ng-repeat="s in yaxis" value="{{ s }}">{{ s
+								}}</option>
+						</select>
+
+						</div>
+						<div class="form-group">
+							<label class="form-label">Chart</label> <select
+						style="width: 100%" ng-model="form.chart" class="form-control">
+							<option ng-repeat="ch in chart" value="{{ ch }}">{{
+								ch }}</option>
+						</select>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+						data-dismiss="modal"
+						style="width: 13%; margin-right: 44%; background-color: #337ab7;"
+						class="btn btn-success" ng-click="graph()">continue</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="modal" id="register" role="dialog">
+			<div class="modal-dialog" style="margin-left: -23%;">
+
+					<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">{{signup}}</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form" name="registerForm">
+							<div class="form-group">
+								<label for="name" class="cols-sm-2 control-label">First
+									Name</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-user fa" aria-hidden="true"></i></span> <input
+									type="text" class="form-control" ng-model="firstname" name="firstname" id="name"
+									placeholder="Enter your First Name" required />
+									</div>
+									<span ng-show="registerForm.firstname.$invalid"
+									class="help-block" style=""><code>This field is
+										mandatory</code></span>
+								</div>
+							</div>
+								<!-- ng-model="form.firstname"  -->
+							<div class="form-group">
+								<label for="name" class="cols-sm-2 control-label">Last
+									Name</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-user fa" aria-hidden="true"></i></span> <input
+									type="text" class="form-control" ng-model="lastname" name="lastname" id="name"
+									placeholder="Enter your Last Name" required />
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="email" class="cols-sm-2 control-label">Your
+									Email</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-envelope fa" aria-hidden="true"></i></span> <input
+									type="email" class="form-control" ng-model="email" name="email" id="email"
+									placeholder="Enter your Email" required />
+									</div>
+									<span ng-show="registerForm.email.$invalid"
+									class="help-block" style=""><code>This field is
+										mandatory</code></span>
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label for="password" class="cols-sm-2 control-label">Password</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+									type="password" class="form-control" ng-model="password" name="password"
+									id="password"  placeholder="Enter your Password"
+									required />
+									</div>
+									<span ng-show="registerForm.password.$invalid"
+									class="help-block" style=""><code>This field is
+										mandatory</code></span>
+								</div>
+								<div style="color:red" ng-show="flaggp">{{passworderror}}</div>
+							</div>
+
+
+							<div class="form-group">
+								<label for="confirmPassword" class="cols-sm-2 control-label">Confirm Password</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+									type="password" class="form-control" ng-model="confirmPassword" name="confirmPassword"
+									id="confirmPassword" placeholder="Enter your Confirm Password"
+									required />
+									</div>
+									<span ng-show="registerForm.confirmPassword.$invalid"
+									class="help-block" style=""><code>This field is
+										mandatory</code></span>
+								</div>
+								<div style="color:red" ng-show="flaggpc">{{confirmPassworderror}}</div>
+							</div>
+
+
+							@*<div class="form-group">
+							<label for="confirm" class="cols-sm-2 control-label">Confirm
+							Password</label>
+							<div class="cols-sm-10">
+							<div class="input-group">
+							<span class="input-group-addon"><i
+							class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+							type="password" class="form-control" name="confirm"
+							id="confirm" placeholder="Confirm your Password"
+							required />
+
+							</div>
+							</div>
+							</div>*@
+
+							<div class="form-group">
+								<label for="typeofuser" class="cols-sm-2 control-label">Please
+									select type of user </label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-users fa" aria-hidden="true"></i></span>
+											<!-- <input
+												type="text" class="form-control" name="typeofuser" id="typeofuser"
+												placeholder="Please Select Type Of User" /> -->
+										<select ng-model="form.typeofadmin" class="form-control" name = "typeofadmin">
+											<option ng-repeat="t in typeofadmin" value="{{ t }}">{{
+												t }}</option>
+										</select>
+									</div><span ng-show="registerForm.typeofadmin.$invalid"
+								class="help-block" style=""><code>This field is
+									mandatory</code></span>
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label for="organizationName" class="cols-sm-2 control-label">Oraganization
+									Name</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-user fa" aria-hidden="true"></i></span> <input
+									type="text" class="form-control" name="organizationname" ng-model="organizationname"
+									id="organizationname"
+									placeholder="Enter your Oraganization Name"
+									required/>
+									</div>
+								</div><span ng-show="registerForm.organizationname.$invalid"
+							class="help-block" style=""><code>This field is
+								mandatory</code></span>
+							</div>
+					</div>
+
+					<div class="form-group ">
+
+						<input type="Submit" value="Register"
+						class="btn btn-primary btn-lg btn-block login-button" data-ng-click="postRegistorFunction('@routes.Application.dashboard()', '@routes.Application.all()')"/>
+
+					</div>
+	</form>
+
+
+	</div>
+
+
+	</div>
+
+	</div>
+	</div>
+
+	</div>
+
+
+	@*<div id="page-wrapper">*@
+
+			<div class="container-fluid" style=" margin-left: -20%;">
+
+
+
+
+			@*<div class="row" >
+						<!-- Trigger the modal with a button -->
+					<div class="kt-content_warpper">
+						<div style="float: right; margin-top: 5%;">
+
+						<button class="btn btn-lg btn-primary btn-add-panel" ng-click="register()" style="margin-bottom: 8%;" ng-show="buttonshow">
+								{{button}}
+						</button>
+						</div>
+
+
+
+					</div>
+				</div>
+
+
+
+
+				<div class="row">
+						<!-- Trigger the modal with a button -->
+					<div class="kt-content_warpper">
+						<div style="{{widstyle}}">
+								<!-- <button type="button" class="btn btn-success" ng-click="open()">Create
+								widget</button> -->
+
+							<button class="btn btn-lg btn-primary btn-add-panel" ng-click="open()">
+								<i class="glyphicon glyphicon-plus"></i> Add widget
+							</button>
+
+
+						</div>
+					</div>
+				</div>
+
+
+*@
+
+				<div class="row" style="margin-left: 48%;margin-top: 11%;" ng-show="impbtn">
+
+					<div class="row" ng-show="welcome" style="margin-left: 16%;margin-top: -15%;">
+
+					<h3 class="text-center" style="
+						margin-left: -86%"> Welcome to College Agrregrator </h3><br>
+
+
+						<h4 style="margin-left: -19%" >To proceed Further upload organisation details</h4><br>
+
+
+					<button type="button" class="btn btn-primary btn-md" ng-click="start()">Start Here</button>
+
+					</div>
+					<br>
+
+					<br>
+
+
+					@*<div class="row">
+						<nvd3 options="optionsLineOnload" data="dataLineOnload"></nvd3>
+					</div>*@
+					@*<div class="row">
+						<nvd3 options="optionsLine" data="dataLine"></nvd3>
+					</div>*@
+
+
+					<div class="container" style="margin-left:-43%;margin-top:-20%;" ng-show = "sample">
+						<div class="alert alert-danger" ng-show = "danger">
+							<strong></strong> Please First upload organisational details
+						</div>
+                       <h2> <b> Organisation Import</b></h2> <br>
+						<h3>Sample organisation Table to download</h3>
+						<div id="dvData">
+							<table class="table table-bordered" style="width:70%;">
+								<thead>
+									<tr>
+										<th>Academic Year</th>
+										<th>Course Name</th>
+										<th>Total Semesters</th>
+										<th>Total Classes</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>2011-2012</td>
+										<td>Couse1</td>
+										<td>8</td>
+										<td>2</td>
+									</tr>
+									<tr>
+										<td>2011-2014</td>
+										<td>course2</td>
+										<td>8</td>
+										<td>2</td>
+									</tr>
+									<tr>
+										<td>2011-2016</td>
+										<td>course3</td>
+										<td>8</td>
+										<td>2</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+
+
+						@*download button*@
+
+					</div>
+
+					@*<p style="font-size: large;margin-left:-4%;">
+						<b>Please Import the file</b>
+
+					</p>*@
+                   @* <div class='button'>
+                        <a href="#" id ="export" class="btn btn-info" role="button" style="background-color: #337ab7"><i class="fa fa-download"></i>Download sample</a>
+                    </div>*@
+					<div class="uploadingfile" style="margin-left:-9%;" ng-show="import">
+
+
+						<p style="font-size: large;margin-left:-4%;">
+							<br>
+							    <b style="margin-left: 9%;">Please Import the file</b> <br>
+
+						</p>
+                        <a href="#" id ="export" class="btn btn-info" role="button" style="background-color: #337ab7;font-weight: bold;"><i class="fa fa-download"></i>Download sample</a>
+
+                        <label class="custom-file-upload" style="border-radius:5px;">
+							<input type="file" id="fileinput"  multiple onchange="angular.element(this).scope().fileNameChanged(this)" >
+
+
+							<i class="fa fa-cloud-upload"></i> Import
+						</label>
+					</div>
+
+
+
+				</div>
+
+
+
+
+
+
+				</div>
+
+
+
+
+
+
+	<div class="row" ng-show="widGraph" style="margin-top:4%;margin-left:6%;">
+		<p style="font-size: large;margin-left:-4%;">
+			<b>Widgets</b>
+		</p>
+		<div  class="col-lg-6" ng-repeat="a in graphArray track by $index | limitTo : limit"
+		id="{{$index}}{{a.type}}"style="margin-left:-1%;" >
+
+			<div class="panel panel-default">
+				<div class="panel-heading" style="background-color:#DCDCDC">
+					<p style="text-align: center;font-size: x-large;">
+						<b>{{a.wid}}</b>
+						<button type="button" class="close"  ng-click="remove($index,a.type)" data-dismiss="modal" style="font-size:xx-large;float:right;">&times;</button>
+						@*<i class="fa fa-trash-o" aria-hidden="true" ng-click="remove($index,a.type)" style="font-size:xx-large;float:right;"></i>*@
+					</p>
+
+						<!-- <div style="float: right; margin-top: 5%;"> -->
+						<!-- <i class="fa fa-trash-o" aria-hidden="true" ng-click="remove($index,a.type)" style="font-size:xx-large;margin-top: -126%;"></i> -->
+
+
+						<!-- </div> -->
+				</div>
+				<div class="panel-body" style="background-color:#f5f5f5">
+
+					<nvd3 options="a.options" data="a.data"></nvd3>
+				</div>
+			</div>
+
+
+
+		</div>
+	</div>
+
+
+	<div ng-show="onloadtable" style="margin-left:35% ;margin-top:6%;">
+		<p style="font-size: medium; margin-top:-7%;" ng-show="para">
+			<b>Select Dashboard -> Add widget to plot your customised charts</b>
+
+		</p>
+		<div class="row" style="margin-left: -52%">
+
+			<p style="font-size: large;">
+				<b>Trending  Languages</b>
+
+			</p>
+			<nvd3 options="optionsLineOnload" data="dataLineOnload"></nvd3>
+
+		</div>
+		<br>
+		<br>
+		<div class=row" style="margin-left: -52%">
+			<p style="font-size: large;">
+				<b>Trending  Technologies</b>
+
+			</p>
+			<nvd3 options="optionsLineOnload1" data="dataLineOnload1"></nvd3>
+		</div>
+
+		<br>
+		<br>
+		<div class="row"  style="margin-left: -31%" ng-show="techtables">
+			<div  class="col-lg-6">
+				<p style="font-size: large;">
+					<b>Trending Technologies</b>
+
+				</p>
+				<table style="text-align:center">
+
+					<tr>
+						<th>Rank</th>
+						<th style="padding-left:30%">Technology</th>
+						@*<th>Weightage</th>*@
+					</tr>
+
+					<tr ng-repeat="x in tech ">
+						<td>{{x.rank}}</td>
+						<td>{{ x.technology }}</td>
+						@*<td>{{ x.weightage }}</td>*@
+					</tr>
+				</table>
+				<br>
+				<div class="row" style="margin-left: 1%">
+					<div>Courtesy :</div>
+					<div><a  href="http://www.cisco.com/c/en/us/solutions/technology-trends.html" target="_blank">http://www.cisco.com/c/en/us/solutions/technology-trends.html</a></div>
+					<div> <a  href="http://searchitoperations.techtarget.com/feature/Ten-IT-trends-through-2017-and-how-to-prepare" target="_blank">http://searchitoperations.techtarget.com/feature/Ten-IT-trends-through-2017-and-how-to-prepare</a></div>
+					<div><a  href="http://www.visualcapitalist.com/top-10-emerging-technologies-2016/" target="_blank">http://www.visualcapitalist.com/top-10-emerging-technologies-2016/</a></div>
+					<div> <a  href="https://www.weforum.org/agenda/2016/06/top-10-emerging-technologies-2016/" target="_blank">https://www.weforum.org/agenda/2016/06/top-10-emerging-technologies-2016/</a></div>
+				</div>
+			</div>
+			<div  class="col-lg-6">
+				<p style="font-size: large;">
+					<b>Trending  Languages</b>
+
+				</p>
+				<table style="text-align:center">
+					<thead>
+						<tr>
+							<th>Rank</th>
+							<th style="padding-left:24%">Languages</th>
+							@*<th>Weightage</th>*@
+						</tr>
+					</thead>
+					<tr ng-repeat="x in lang">
+						<td>{{$index+1}}</td>
+						<td>{{ x.technology }}</td>
+						@*<td>{{ x.weightage }}</td>*@
+					</tr>
+				</table>
+				<br>
+				<div class="row" style="margin-left: 1%">
+					<div>Courtesy :</div>
+					<div><a  href="http://www.topprogramminglanguages.com/" target="_blank">http://www.topprogramminglanguages.com/</a></div>
+					<div> <a  href="http://mashable.com/2014/01/21/learn-programming-languages/#3pkkkBg2aaqT" target="_blank">http://mashable.com/2014/01/21/learn-programming-languages/#3pkkkBg2aaqT</a></div>
+					<div> <a  href="http://codecondo.com/top-10-programming-languages-for-full-stack-web-developers/" target="_blank">http://codecondo.com/top-10-programming-languages-for-full-stack-web-developers/</a></div>
+					<div> <a  href="http://www.rswebsols.com/tutorials/programming/top-10-programming-languages-web-development" target="_blank">http://www.rswebsols.com/tutorials/programming/top-10-programming-languages-web-development</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+				<div style="margin-left:-19%;margin-top:4%;" ng-show="editTable">
+					<br><br>
+					<div class="row" style=" width:84%;margin-left:14%;">
+						<form class="form-inline">
+							<div style="float:left">
+								<p style="font-size: large;">
+									<b>Organisation Table</b>
+
+								</p>
+							</div>
+							<div class="form-group" style="float:right">
+
+								<label style="margin-left:-29%;">Search</label>
+								<input type="text" ng-model="search" class="form-control" placeholder="Search" style="margin-top:-16%;">
+							</div>
+							<br><br>
+						</form>
+						<div class="bs-component" style="border: 1px solid black;">
+							<table class="table table-striped table-hover" data={OrganizationDetails} striped={true} hover={true} pagination={true} selectRow={selectRowProp} cellEdit={cellEditProp}
+							insertRow={true} deleteRow={true} search={true} columnFilter={true} options={options} ng-table="OrganizationTable">
+								<thead>
+									<tr>
+										<th ng-click="sort('courseName')">Course Name
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('academicYear')">Academic Year
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('totalSemesters')">Total Semesters
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('totalClasses')"> Total Classes
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+
+									</tr>
+								</thead>
+								<tbody>
+
+
+
+									<tr dir-paginate="user in editData|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+
+
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.courseName}}</span>
+											<input ng-show="user.editing" ng-model="user.courseName" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.academicYear}}</span>
+											<input ng-show="user.editing" ng-model="user.academicYear" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.totalSemesters}}</span>
+											<input ng-show="user.editing" ng-model="user.totalSemesters" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.totalClasses}}</span>
+											<input ng-show="user.editing" ng-model="user.totalClasses" ng-blur="doneEditing(user)" autofocus />
+										</td>
+
+									</tr>
+								</tbody>
+							</table>
+							<div style="margin-left:70%;">
+								<dir-pagination-controls
+								max-size="5"
+								direction-links="true"
+								boundary-links="true" >
+								</dir-pagination-controls>
+							</div>
+						</div>
+
+
+					</div>
+					<br><br>
+					<div style="float: right; margin-top: 3%;margin-right:9%;">
+
+						<button class="btn btn-md btn-primary btn-add-panel" ng-click="editsave()" style="margin-bottom: 8%;margin-top: -106%">
+							Save
+						</button>
+					</div>
+					<div class="uploadingfile" style="margin-left:69%;">
+						<label class="custom-file-upload" style="border-radius:5px;">
+							<input type="file" id="fileinput1"  multiple onchange="angular.element(this).scope().fileNameChanged1(this)" >
+							<i class="fa fa-cloud-upload"></i> Upload New Csv file
+						</label>
+					</div>
+					<br><br>
+				</div>
+
+
+
+
+
+
+
+
+		<div class="modal fade" id="savepopup" role="dialog">
+			<div class="modal-dialog" style="margin-left: -20%;width:36%">
+
+					<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Save Details</h4>
+					</div>
+					<div class="modal-body">
+						<h4 class="text-center" style="text-decoration-color: black;
+                            font-size: larger;">Do you want to upload studentdetails?</h4>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" ng-click="saveno()" class="btn kt-btn-sm btn-default" data-dismiss="modal" style="background-color: #337ab7;">No</button>
+						<button type="button" ng-click="saveyes()" class="btn kt-btn-sm kt-btn_sucess text-uppercase" data-dismiss="modal" style="background-color: #337ab7;">Yes</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+				<div style="margin-left:-6%;margin-top:3%" ng-show="orgTable">
+					<br><br>
+					<div class="row" style=" width:84%;margin-left:15%;">
+						<form class="form-inline">
+							<div style="float:left">
+								<p style="font-size: large;">
+									<b>Organisation Table</b>
+
+								</p>
+							</div>
+							<div class="form-group" style="float:right">
+
+								<label >Search</label>
+								<input type="text" ng-model="search" class="form-control" placeholder="Search">
+							</div>
+							<br><br>
+						</form>
+						<div class="bs-component" style="border: 1px solid black;">
+							<table class="table table-striped table-hover" data={OrganizationDetails} striped={true} hover={true} pagination={true} selectRow={selectRowProp} cellEdit={cellEditProp}
+							insertRow={true} deleteRow={true} search={true} columnFilter={true} options={options} ng-table="OrganizationTable">
+								<thead>
+									<tr>
+										<th ng-click="sort('courseName')">Course Name
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('academicYear')">Academic Year
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('totalSemesters')">Total Semesters
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('totalClasses')"> Total Classes
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr dir-paginate="user in dummy|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.courseName}}</span>
+											<input ng-show="user.editing" ng-model="user.courseName" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing" >{{user.academicYear}}</span>
+											<input ng-show="user.editing" ng-model="user.academicYear" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.totalSemesters}}</span>
+											<input ng-show="user.editing" ng-model="user.totalSemesters" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.totalClasses}}</span>
+											<input ng-show="user.editing" ng-model="user.totalClasses" ng-blur="doneEditing(user)" autofocus />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div style="margin-left:70%;">
+							<dir-pagination-controls
+							max-size="5"
+							direction-links="true"
+							boundary-links="true" >
+						</dir-pagination-controls>
+							</div>
+						</div>
+
+
+					</div>
+					<br><br>
+					<div style="float: right; margin-top: 3%;margin-right:9%;">
+
+						<button class="btn btn-md btn-primary btn-add-panel" ng-click="save()" style="margin-bottom: 8%;margin-top: -108%">
+								Save
+						</button>
+					</div>
+					<div class="uploadingfile" style="margin-left:69%;">
+						<label class="custom-file-upload" style="border-radius:5px;">
+							<input type="file" id="fileinput1"  multiple onchange="angular.element(this).scope().fileNameChanged1(this)" >
+							<i class="fa fa-cloud-upload"></i> Upload New Csv file
+						</label>
+					</div>
+					<br><br>
+				</div>
+
+				<br><br><br><br>
+
+
+        <div ng-show="studentshow" >
+		<b ><h3 style="margin-left: 35%;"> Student Import </h3></b> <br>
+			</div>
+				<div class="panel panel-default" style="margin-left:21%;width:43%;" ng-show="courseShow">
+					<!-- <b ><h3 style="margin-left: 28%;"> Student Import </h3></b> <br> -->
+
+					<div class="panel-heading" style="background-color:#DCDCDC">
+						<p style="text-align: center;font-size: x-large;">
+
+
+							@*<b><h3> Student Import </h3></b>*@
+
+							<b>Select the Organization Details</b>
+
+						</p>
+
+
+					</div>
+					<div class="panel-body" style="background-color:#f5f5f5;height:350px;">
+						<div class="row">
+						<!--	<button class="btn btn-md btn-primary btn-add-panel" ng-click="editOrganisation()" style="margin-left: 68%;">
+								Edit Organisation
+							</button> -->
+
+						</div>
+								<div class="row" style="margin-left:26%;margin-top:1%;" >
+									<form>
+										<div class="clearfix" style="margin-left: -2%;width: 365%;">
+											<div class="col-sm-6">
+												<div style="color:red;text-align:center">{{ error }}</div>
+												<div class="form-group">
+													<label class="form-label">Courses</label>
+													<select style="width:35%" ng-model="form.course" ng-change="getAcademic(form)" class="form-control">
+														<option ng-repeat="c in orgCourses" value="{{ c }}">{{ c}}</option>
+													</select>
+
+												</div>
+												<div class="form-group">
+													<label class="form-label">Academic Year</label>
+													<select style="width:35%" class="form-control" ng-model="form.academic" ng-change="getSemester(form)">
+														<option ng-repeat="year in academicYear" value="{{ year }}">{{ year }}</option>
+													</select>
+
+												</div>
+												<div class="form-group">
+													<label class="form-label">Semester</label>
+													@*<input type="text" readonly ng-model="form.semester" class="form-control" />*@
+													<select style="width:35%" class="form-control" ng-model="form.semester" ng-change="getImportBtn(form)">
+														<option ng-repeat="sem in semester" value="{{ sem }}">{{ sem }}</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</form>
+									<div class="uploadingfile" ng-show="importbtn" style="margin-left:8%;margin-top:2%;">
+
+										<label class="custom-file-upload" style="border-radius:5px;">
+											<input type="file" id="fileinput"  multiple onchange="angular.element(this).scope().fileNameChanged2(this)" >
+
+
+											<i class="fa fa-cloud-upload"></i>Student Details Import
+										</label>
+									</div>
+								</div>
+					</div>
+
+				</div>
+
+
+
+
+				<div style="margin-left:-3%;" ng-show="Student">
+					<br><br>
+					<div class="row" style=" width:84%;margin-left:8%;">
+						<form class="form-inline">
+							<div style="float:left">
+								<p style="font-size: large;">
+									<b>Student Table</b>
+
+								</p>
+							</div>
+							<div class="form-group" style="float:right">
+
+								<label style="margin-left:-29%;">Search</label>
+								<input type="text" ng-model="search" class="form-control" placeholder="Search" style="margin-top:-4%;">
+							</div>
+							<br><br>
+						</form>
+						<div class="bs-component" style="border: 1px solid black;">
+							<table class="table table-striped table-hover" data={StudentDetails} striped={true} hover={true} pagination={true} selectRow={selectRowProp} cellEdit={cellEditProp}
+							insertRow={true} deleteRow={true} search={true} columnFilter={true} options={options} ng-table="Student Table">
+								<thead>
+									<tr>
+										<th ng-click="sort('regNumber')">Reg Number
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('Student')">Student
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('Maths')">Maths
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('physics')"> Physics
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+										<th ng-click="sort('Chemistry')"> Chemistry
+											<span class="glyphicon sort-icon"  ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+										</th>
+
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr dir-paginate="user in csvresult2|orderBy:sortKey:reverse|filter:search|itemsPerPage:2">
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.regNumber}}</span>
+											<input ng-show="user.editing" ng-model="user.regNumber" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing" ng-dblclick="editItem(user)">{{user.Student}}</span>
+											<input ng-show="user.editing" ng-model="user.Student" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.Maths}}</span>
+											<input ng-show="user.editing" ng-model="user.Maths" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.physics}}</span>
+											<input ng-show="user.editing" ng-model="user.Physics" ng-blur="doneEditing(user)" autofocus />
+										</td>
+										<td ng-dblclick="editItem(user)"><span ng-hide="user.editing">{{user.Chemistry}}</span>
+											<input ng-show="user.editing" ng-model="user.Chemistry" ng-blur="doneEditing(user)" autofocus />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div style="margin-left:70%;">
+								<dir-pagination-controls
+								max-size="5"
+								direction-links="true"
+								boundary-links="true" >
+								</dir-pagination-controls>
+							</div>
+						</div>
+
+
+					</div>
+					<br><br>
+					<div style="float: right; margin-top: 3%;margin-right:9%;">
+
+						<button class="btn btn-md btn-primary btn-add-panel" ng-click="save1()" style="margin-bottom: 8%;margin-top: -108%">
+							Save
+						</button>
+					</div>
+						<!--	<div class="uploadingfile" style="margin-left:69%;">
+						<label class="custom-file-upload" style="border-radius:5px;">
+							<input type="file" id="fileinput1"  multiple onchange="angular.element(this).scope().fileNameChanged1(this)" >
+							<i class="fa fa-cloud-upload"></i> Upload New Csv file
+						</label>
+					</div> -->
+					<br><br>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<!--widget model -->
+				@*<div class="modal fade" id="widget" role="dialog">
+					<div class="modal-dialog" style="margin-left: -23%;">
+
+							<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Widget Selection</h4>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="form-label"> Widget Name</label> <input
+								type="text" ng-model="form.widget" class="form-control"
+								placeholder="Enter Widget Name" />
+								</div>
+								<form>
+									<div ng-show="tag">
+										<div class="form-group">
+											<label class="form-label">Xaxis</label>
+
+											<select style="width:100%" ng-model="form.xaxis" ng-change="getWidgetDetails()" class="form-control" >
+												<option ng-repeat="x in xaxis" value="{{ x }}">{{ x }}</option>
+											</select>
+										</div>
+									</div>
+
+
+									<div ng-show="tag1">
+
+										<div class="form-group">
+											<label class="form-label">ChooseAcademicYear</label>
+
+											<select style="width:100%" ng-model="form.allAcademicYears" ng-change="getAllCoursesAvg(form)" class="form-control">
+												<option ng-repeat="y in allAcademicYears" value="{{ y }}">{{ y }}</option>
+											</select>
+
+										</div>
+										<div class="form-group">
+											<label class="form-label">ChooseAllCourses</label>
+											<select style="width:100%" class="form-control" ng-model="form.allCoursesAvg" ng-change="getAllSemesterAvg(form)">
+												<option ng-repeat="courses in allCoursesAvg" value="{{ courses }}">{{ courses }}</option>
+											</select>
+
+										</div>
+										<div class="form-group">
+											<label class="form-label">ChooseAllSEMESTERS</label>
+
+											<select style="width:100%" class="form-control" ng-model="form.allSemesters" ng-change="getAllSubjectAvg(form)">
+												<option ng-repeat="sem in allSemesters" value="{{ sem }}">{{ sem }}</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label class="form-label">ChooseALLSUBJECTS</label>
+
+											<select style="width:100%" class="form-control" ng-model="form.allSubjectAvg" >
+												<option ng-repeat="sub in allSubjectAvg" value="{{ sub }}">{{ sub }}</option>
+											</select>
+										</div>
+
+									</div>
+
+									<div ng-show="tag2">
+
+										<div class="form-group">
+											<label class="form-label">ChooseAllSEMESTERS</label>
+											<select style="width:100%" class="form-control" ng-model="form.allSemesters" ng-change="getallAcademicYears(form)">
+												<option ng-repeat="sem in allSemesters" value="{{ sem }}">{{ sem }}</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label class="form-label">ChooseAcademicYear</label>
+
+											<select style="width:100%" ng-model="form.academicYears" ng-change="getAllCoursesAvg(form)" class="form-control">
+												<option ng-repeat="y in allAcademicYears" value="{{ y }}">{{ y }}</option>
+											</select>
+
+										</div>
+										<div class="form-group">
+											<label class="form-label">ChooseAllCourses</label>
+											<select style="width:100%" class="form-control" ng-model="form.allCoursesAvg" ng-change="getAllSubjectAvg(form)">
+												<option ng-repeat="courses in allCoursesAvg" value="{{ courses }}">{{ courses }}</option>
+											</select>
+
+										</div>
+										<div class="form-group">
+											<label class="form-label">ChooseALLSUBJECTS</label>
+
+											<select style="width:100%" class="form-control" ng-model="form.allSubjectAvg" >
+												<option ng-repeat="sub in allSubjectAvg" value="{{ sub }}">{{ sub }}</option>
+											</select>
+										</div>
+									</div>
+
+									<div ng-show="tag3">
+
+										<div class="form-group">
+											<label class="form-label">ChooseAllCourses</label>
+											<select style="width:100%" class="form-control" ng-model="form.allCoursesAvg" ng-change="getallAcademicYears(form)">
+												<option ng-repeat="courses in allCoursesAvg" value="{{ courses }}">{{ courses }}</option>
+											</select>
+
+										</div>
+
+										<div class="form-group">
+											<label class="form-label">ChooseAcademicYear</label>
+
+											<select style="width:100%" ng-model="form.academicYears" ng-change="getAllSemesterAvg(form)" class="form-control">
+												<option ng-repeat="y in allAcademicYears" value="{{ y }}">{{ y }}</option>
+											</select>
+
+										</div>
+
+										<div class="form-group">
+											<label class="form-label">ChooseAllSEMESTERS</label>
+											<select style="width:100%" class="form-control" ng-model="form.allSemesters" ng-change="getAllSubjectAvg(form)">
+												<option ng-repeat="sem in allSemesters" value="{{ sem }}">{{ sem }}</option>
+											</select>
+										</div>
+
+
+										<div class="form-group">
+											<label class="form-label">ChooseALLSUBJECTS</label>
+
+											<select style="width:100%" class="form-control" ng-model="form.allSubjectAvg" >
+												<option ng-repeat="sub in allSubjectAvg" value="{{ sub }}">{{ sub }}</option>
+											</select>
+										</div>
+									</div>
+
+									<div ng-show="tag4">
+										<div class="form-group">
+											<label class="form-label">ChooseALLSUBJECTS</label>
+
+											<select style="width:100%" class="form-control" ng-model="form.allSubjectAvg"  ng-change="getAllSemesterAvg(form)">
+												<option ng-repeat="sub in allSubjectAvg" value="{{ sub }}">{{ sub }}</option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label class="form-label">ChooseAllSEMESTERS</label>
+											<select style="width:100%" class="form-control" ng-model="form.allSemesters" ng-change="getallAcademicYears(form)">
+												<option ng-repeat="sem in allSemesters" value="{{ sem }}">{{ sem }}</option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label class="form-label">ChooseAcademicYear</label>
+
+											<select style="width:100%" ng-model="form.academicYears" ng-change="getAllCoursesAvg(form)" class="form-control">
+												<option ng-repeat="y in allAcademicYears" value="{{ y }}">{{ y }}</option>
+											</select>
+
+										</div>
+										<div class="form-group">
+											<label class="form-label">ChooseAllCourses</label>
+											<select style="width:100%" class="form-control" ng-model="form.allCoursesAvg" >
+												<option ng-repeat="courses in allCoursesAvg" value="{{ courses }}">{{ courses }}</option>
+											</select>
+
+										</div>
+									</div>
+								</form>
+
+								<div class="form-group">
+									<label class="form-label">Yaxis</label> <select
+								style="width: 100%" class="form-control" ng-model="form.yaxis" ng-change="getFieldsValues(form)">
+									<option ng-repeat="s in yaxis" value="{{ s }}">{{ s
+										}}</option>
+								</select>
+
+								</div>
+								<div class="form-group">
+									<label class="form-label">Chart</label> <select
+								style="width: 100%" ng-model="form.chart" class="form-control">
+									<option ng-repeat="ch in chart" value="{{ ch }}">{{
+										ch }}</option>
+								</select>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+								data-dismiss="modal"
+								style="width: 13%; margin-right: 44%; background-color: #337ab7;"
+								class="btn btn-success" ng-click="graph()">continue</button>
+							</div>
+						</div>
+
+					</div>
+				</div> *@
+
+
+
+				<div class="modal fade modal-custom" id="registerConfirm" tabindex="-1" role="dialog">
+					<div style="position: absolute;margin-left: -17%;width:28%;" class="modal-dialog" class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<div class="header-xs">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+							</div>
+							<div class="modal-body">
+								<h4 class="text-center"><b>Registration Successful</b></h4>
+							</div>
+							<div class="modal-footer">
+								<button type="button" ng-click="No()" class="btn kt-btn-sm btn-default" data-dismiss="modal" style="background-color: #337ab7;">OK</button>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade modal-custom" id="registerFailure" tabindex="-1" role="dialog">
+					<div style="position: absolute;margin-left: -17%;width:28%;" class="modal-dialog" class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<div class="header-xs">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+							</div>
+							<div class="modal-body">
+								<h4 class="text-center"><b>Email id is already registered!Please register with differant Email id.</b></h4>
+							</div>
+							<div class="modal-footer">
+								<button type="button" ng-click="No()" class="btn kt-btn-sm btn-default" data-dismiss="modal">OK</button>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+
+				<div class="modal fade" id="deleteConfirmation" role="dialog">
+					<div class="modal-dialog" style="margin-left: -20%;width:36%">
+
+							<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Delete widget</h4>
+							</div>
+							<div class="modal-body">
+								<h6 class="text-center" style="text-decoration-color: black;
+								font-size: larger;">Are you sure you want to delete the widget ?</h6>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" ng-click="No()" class="btn kt-btn-sm btn-default" data-dismiss="modal" style="background-color: #337ab7;">No</button>
+								<button type="button" ng-click="Yes()" class="btn kt-btn-sm kt-btn_sucess text-uppercase" data-dismiss="modal" style="background-color: #337ab7;">Yes</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+
+
+				<!-- Modal -->
+				@*<div class="modal" id="register" role="dialog">
+					<div class="modal-dialog" style="margin-left: -23%;">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">{{signup}}</h4>
+							</div>
+							<div class="modal-body">
+								<form role="form" name="registerForm">
+									<div class="form-group">
+										<label for="name" class="cols-sm-2 control-label">First
+											Name</label>
+										<div class="cols-sm-10">
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-user fa" aria-hidden="true"></i></span> <input
+													type="text" class="form-control" ng-model="firstname" name="firstname" id="name"
+													placeholder="Enter your First Name" required />
+											</div>
+											<span ng-show="registerForm.firstname.$invalid"
+											class="help-block" style=""><code>This field is
+												mandatory</code></span>
+										</div>
+									</div>
+									<!-- ng-model="form.firstname"  -->
+									<div class="form-group">
+										<label for="name" class="cols-sm-2 control-label">Last
+											Name</label>
+										<div class="cols-sm-10">
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-user fa" aria-hidden="true"></i></span> <input
+													type="text" class="form-control" ng-model="lastname" name="lastname" id="name"
+													placeholder="Enter your Last Name" required />
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="email" class="cols-sm-2 control-label">Your
+											Email</label>
+										<div class="cols-sm-10">
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-envelope fa" aria-hidden="true"></i></span> <input
+													type="email" class="form-control" ng-model="email" name="email" id="email"
+													placeholder="Enter your Email" required />
+											</div>
+											<span ng-show="registerForm.email.$invalid"
+											class="help-block" style=""><code>This field is
+												mandatory</code></span>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label for="password" class="cols-sm-2 control-label">Password</label>
+										<div class="cols-sm-10">
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+													type="password" class="form-control" ng-model="password" name="password"
+													id="password"  placeholder="Enter your Password"
+													required />
+											</div>
+											<span ng-show="registerForm.password.$invalid"
+											class="help-block" style=""><code>This field is
+												mandatory</code></span>
+											</div>
+										<div style="color:red" ng-show="flaggp">{{passworderror}}</div>
+									</div>
+
+
+									<div class="form-group">
+										<label for="confirmPassword" class="cols-sm-2 control-label">Confirm Password</label>
+										<div class="cols-sm-10">
+											<div class="input-group">
+												<span class="input-group-addon"><i
+												class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+											type="password" class="form-control" ng-model="confirmPassword" name="confirmPassword"
+											id="confirmPassword" placeholder="Enter your Confirm Password"
+											required />
+											</div>
+											<span ng-show="registerForm.confirmPassword.$invalid"
+											class="help-block" style=""><code>This field is
+												mandatory</code></span>
+											</div>
+										<div style="color:red" ng-show="flaggpc">{{confirmPassworderror}}</div>
+									</div>
+
+
+									@*<div class="form-group">
+										<label for="confirm" class="cols-sm-2 control-label">Confirm
+											Password</label>
+										<div class="cols-sm-10">
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+													type="password" class="form-control" name="confirm"
+													id="confirm" placeholder="Confirm your Password"
+													required />
+
+											</div>
+										</div>
+									</div>*@
+
+								@*	<div class="form-group">
+										<label for="typeofuser" class="cols-sm-2 control-label">Please
+											select type of user </label>
+										<div class="cols-sm-10">
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-users fa" aria-hidden="true"></i></span>
+												<!-- <input
+												type="text" class="form-control" name="typeofuser" id="typeofuser"
+												placeholder="Please Select Type Of User" /> -->
+												<select ng-model="form.typeofadmin" class="form-control" name = "typeofadmin">
+													<option ng-repeat="t in typeofadmin" value="{{ t }}">{{
+														t }}</option>
+												</select>
+											</div><span ng-show="registerForm.typeofadmin.$invalid"
+										class="help-block" style=""><code>This field is
+											mandatory</code></span>
+										</div>
+									</div>
+
+
+									<div class="form-group">
+										<label for="organizationName" class="cols-sm-2 control-label">Oraganization
+											Name</label>
+										<div class="cols-sm-10">
+											<div class="input-group">
+												<span class="input-group-addon"><i
+													class="fa fa-user fa" aria-hidden="true"></i></span> <input
+													type="text" class="form-control" name="organizationname" ng-model="organizationname"
+													id="organizationname"
+													placeholder="Enter your Oraganization Name"
+													required/>
+											</div>
+										</div><span ng-show="registerForm.organizationname.$invalid"
+									class="help-block" style=""><code>This field is
+										mandatory</code></span>
+										</div>
+									</div>
+
+									<div class="form-group ">
+
+										<input type="Submit" value="Register"
+											class="btn btn-primary btn-lg btn-block login-button" data-ng-click="postRegistorFunction('@routes.Application.dashboard()', '@routes.Application.all()')"/>
+
+									</div>
+								</form>
+
+
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+
+			</div> *@
+
+
+		@*</div>*@
+
+
+	<!--</div> -->
+
+
+		<div class="modal" id="changepassword" role="dialog">
+			<div class="modal-dialog" style="margin-left: -23%;">
+
+					<!-- Modal content-->
+				<div class="modal-content">
+					
+					<div class="modal-body">
+						<form>
+							<div class="form-group">
+								<label for="oldpassword" class="cols-sm-2 control-label">Old Password</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+									type="password" class="form-control" ng-model="oldpassword" name="oldpassword"
+									id="oldpassword" placeholder="Enter your old Password"
+									required />
+									</div>
+								</div>
+								<div style="color:red" ng-show="flagg1">{{errormessage1}}</div>
+							</div>
+
+
+
+							<div class="form-group">
+								<label for="password" class="cols-sm-2 control-label">New Password</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+									type="password" class="form-control" ng-model="newpassword1" name="password"
+									id="password" placeholder="Enter your new Password"
+									required />
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="confirm" class="cols-sm-2 control-label">Confirm
+									Password</label>
+								<div class="cols-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+										class="fa fa-lock fa-lg" aria-hidden="true"></i></span> <input
+									type="password" class="form-control" ng-model="confirmnewpassword" name="confirm"
+									id="confirm" placeholder="Confirm your new Password"
+									required />
+									</div>
+								</div>
+								<div style="color:red" ng-show="flagg">{{errormessage}}</div>
+							</div>
+
+
+
+
+
+							<div class="form-group ">
+
+								<input type="Submit" value="Change Password" data-ng-click="postChangePassword('@routes.Application.dashboard()', '@routes.Application.dashboard()')"
+								class="btn btn-primary btn-lg btn-block login-button"/>
+
+							</div>
+						</form>
+
+
+					</div>
+
+
+				</div>
+
+			</div>
+		</div>
+
+
+
+
+		<script src='@routes.Assets.at("/javascripts/js/jquery-1.11.0.min.js")'></script>
+	@*<script src='@routes.Assets.at("/javascripts/angular.min.js")'></script>*@
+
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/angular-animate.min.js"></script>
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/angular-cookies.min.js"></script>
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/angular-aria.min.js"></script>
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/angular-messages.min.js"></script>
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/angular-material.min.js"></script>
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/jquery-ui.min.js"></script>
+
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/bootstrap.min.js"></script>
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/angular-cookies.js"></script>
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/angular-ui-router.min.js"></script>
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/assets/javascripts/bootstrap.min.js"></script>
+
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/js/angular-route.min.js"></script>
+
+
+
+	@*<script src="controllers/Dashboard.js"></script>*@
+
+
+	<script src='@routes.Assets.at("/javascripts/js/angular-nvd3.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("/javascripts/js/d3.min.js")'></script>
+
+	<script src='@routes.Assets.at("/javascripts/js/nv.d3.min.js")'></script>
+		@*<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>*@
+
+	<script src='@routes.Assets.at("/javascripts/js/angular-datatables.min.js")'></script>
+
+	<script src='@routes.Assets.at("/javascripts/js/jquery.dataTables.min.js")'></script>
+	<script src='@routes.Assets.at("/javascripts/js/dirPagination.js")'></script>
+@*
+
+	<script src="http://d13iq1y4fpsxi8.cloudfront.net/assets/javascripts/bootstrap.min.js"></script>
+
+
+
+  <script src='@routes.Assets.at("/javascripts/js/jquery.js")'></script>
+
+
+    <script src='@routes.Assets.at("/javascripts/js/bootstrap.min.js")'></script>
+*@
+
+
+   
+  
+	</form>
+ 
+</body>
+
+</html>
+}
+
